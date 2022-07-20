@@ -6,17 +6,17 @@ int main()
 {
     int num;
 
-    cout << "Enter a number: ";
+    cout << "Enter a positive whold number: ";
 
     for (;;)
     {
-        if (cin >> num)
+        if (cin >> num && num > 0)
         {
             break;
         }
         else
         {
-            cout << endl << "Please enter a valid number: ";
+            cout << endl << "Please enter a valid positive whole number: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
