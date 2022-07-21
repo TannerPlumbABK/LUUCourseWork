@@ -136,7 +136,7 @@ void SaveLevel(char* pLevel, int width, int height)
     string levelName;
     cin >> levelName;
 
-    levelName.insert(0, "../02_02_MazeGame_Levels");
+    levelName.insert(0, "../02_02_MazeGame_Levels/");
 
     ofstream levelFile;
     levelFile.open(levelName);
