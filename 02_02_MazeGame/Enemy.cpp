@@ -2,7 +2,7 @@
 
 #include "Enemy.h"
 
-Enemy::Enemy(int x, int y, int deltaX = 0, int deltaY = 0)
+Enemy::Enemy(int x, int y, int deltaX, int deltaY)
 	: PlacableActor(x, y)
 	, m_currentMovementX(0)
 	, m_currentMovementY(0)

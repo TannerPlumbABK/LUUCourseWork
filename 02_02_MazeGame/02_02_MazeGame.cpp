@@ -14,8 +14,19 @@ int main()
 			myGame.Run();
 		}
 
-		cout << "You won!" << endl;
-		// Play win sound
+		if (myGame.DidUserQuit())
+		{
+			cout << "Thanks for playing!" << endl;
+		}
+		else if (myGame.GetPlayerLives() <= 0)
+		{
+			cout << "You lose!" << endl;
+		}
+		else
+		{
+			cout << "You won!" << endl;
+			// PlayWinSound();
+		}
 	}
 	else
 	{
