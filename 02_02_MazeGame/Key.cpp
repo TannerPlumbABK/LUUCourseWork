@@ -3,8 +3,8 @@
 void Key::Draw()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, m_color);
+	SetConsoleTextAttribute(console, (int)m_color);
 
 	std::cout << "+";
-	SetConsoleTextAttribute(console, regularColor);
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 }

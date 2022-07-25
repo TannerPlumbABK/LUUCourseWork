@@ -2,22 +2,25 @@
 
 #include "Point.h"
 
-constexpr int greenColor = 10;
-constexpr int greenColorSolid = 34;
-constexpr int redColor = 12;
-constexpr int redColorSolid = 68;
-constexpr int blueColor = 9;
-constexpr int blueColorSolid = 153;
-constexpr int regularColor = 7;
+enum class ActorColor
+{
+	Regular = 7,
+	Blue = 9,
+	Green = 10,
+	Red = 12,
+	SolidGreen = 34,
+	SolidRed = 68,
+	SolidBlue = 153
+};
 
 class PlacableActor
 {
 protected:
 	Point* m_pPosition;
 	bool m_isActive;
-	int m_color;
+	ActorColor m_color;
 public:
-	PlacableActor(int x, int y, int color = regularColor);
+	PlacableActor(int x, int y, ActorColor color = ActorColor::Regular);
 	virtual ~PlacableActor();
 
 	int GetPositionX();
@@ -26,7 +29,7 @@ public:
 	int* GetPositionYPointer();
 	void SetPosition(int x, int y);
 
-	int GetColor() { return m_color; }
+	ActorColor GetColor() { return m_color; }
 
 	void Remove() { m_isActive = false; }
 	bool IsActive() { return m_isActive; }

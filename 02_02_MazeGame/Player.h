@@ -14,7 +14,7 @@ public:
 	Player();
 
 	bool HasKey();
-	bool HasKey(int color);
+	bool HasKey(ActorColor color);
 	void PickupKey(Key* key);
 	void UseKey();
 	void DropKey();

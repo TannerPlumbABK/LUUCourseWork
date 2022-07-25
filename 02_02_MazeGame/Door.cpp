@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "Door.h"
 
-Door::Door(int x, int y, int color, int closedColor)
+Door::Door(int x, int y, ActorColor color, ActorColor closedColor)
 	: PlacableActor(x, y, color)
 	, m_isOpen(false)
 	, m_closedColor(closedColor)
@@ -13,12 +13,12 @@ void Door::Draw()
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (m_isOpen)
 	{
-		SetConsoleTextAttribute(console, m_color);
+		SetConsoleTextAttribute(console, (int)m_color);
 	}
 	else
 	{
-		SetConsoleTextAttribute(console, m_closedColor);
+		SetConsoleTextAttribute(console, (int)m_closedColor);
 	}
 	std::cout << "|";
-	SetConsoleTextAttribute(console, regularColor);
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 }

@@ -61,7 +61,7 @@ bool Level::Load(string levelName, int* playerX, int* playerY)
 	m_height = atoi(temp);
 
 	m_pLevelData = new char[m_width * m_height];
-	levelFile.read(m_pLevelData, m_width * m_height);
+	levelFile.read(m_pLevelData, (long long)m_width * (long long)m_height);
 
 	bool anyWarnings = Convert(playerX, playerY);
 	if (anyWarnings)
@@ -76,7 +76,7 @@ bool Level::Load(string levelName, int* playerX, int* playerY)
 void Level::Draw()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, regularColor);
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
 
 	for (int y = 0; y < GetHeight(); y++)
 	{
@@ -150,27 +150,27 @@ bool Level::Convert(int* playerX, int* playerY)
 				break;
 			case 'r':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, redColor));
+				m_pActors.push_back(new Key(x, y, ActorColor::Red));
 				break;
 			case 'g':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, greenColor));
+				m_pActors.push_back(new Key(x, y, ActorColor::Green));
 				break;
 			case 'b':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Key(x, y, blueColor));
+				m_pActors.push_back(new Key(x, y, ActorColor::Blue));
 				break;
 			case 'R':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, redColor, redColorSolid));
+				m_pActors.push_back(new Door(x, y, ActorColor::Red, ActorColor::SolidRed));
 				break;
 			case 'G':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, greenColor, greenColorSolid));
+				m_pActors.push_back(new Door(x, y, ActorColor::Green, ActorColor::SolidGreen));
 				break;
 			case 'B':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Door(x, y, blueColor, blueColorSolid));
+				m_pActors.push_back(new Door(x, y, ActorColor::Blue, ActorColor::SolidBlue));
 				break;
 			case 'X':
 				m_pLevelData[index] = ' ';
