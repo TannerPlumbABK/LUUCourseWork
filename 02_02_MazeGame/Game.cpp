@@ -9,6 +9,7 @@
 #include "Money.h"
 #include "Goal.h"
 #include "Enemy.h"
+#include "AudioManager.h"
 
 using namespace std;
 
@@ -113,6 +114,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 		{
 			Enemy* collidedEnemy = dynamic_cast<Enemy*>(collidedActor);
 			assert(collidedEnemy);
+			AudioManager::GetInstance()->PlayLoseLivesSound();
 			collidedEnemy->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
 			m_player.DecrementLives();
@@ -127,6 +129,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 		{
 			Money* collidedMoney = dynamic_cast<Money*>(collidedActor);
 			assert(collidedMoney);
+			AudioManager::GetInstance()->PlayMoneySound();
 			collidedMoney->Remove();
 			m_player.AddMoney(collidedMoney->GetWorth());
 			m_player.SetPosition(newPlayerX, newPlayerY);
@@ -141,7 +144,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 				m_player.PickupKey(collidedKey);
 				collidedKey->Remove();
 				m_player.SetPosition(newPlayerX, newPlayerY);
-				//PlayKeyPickupSound();
+				AudioManager::GetInstance()->PlayKeyPickupSound();
 			}
 			break;
 		}
@@ -157,12 +160,9 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 					collidedDoor->Remove();
 					m_player.UseKey();
 					m_player.SetPosition(newPlayerX, newPlayerY);
-					//PlayDoorOpenSound();
+					AudioManager::GetInstance()->PlayDoorOpenSound();
 				}
-				else
-				{
-					//PlayDoorClosedSound(); 
-				}
+				else AudioManager::GetInstance()->PlayDoorClosedSound();
 			}
 			else
 			{
