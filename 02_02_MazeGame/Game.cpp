@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <assert.h>
 
 #include "Game.h"
 #include "Key.h"
@@ -101,34 +102,40 @@ bool Game::Update()
 
 bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 {
+	bool isGameDone = false;
 	PlacableActor* collidedActor = m_level.UpdateActors(newPlayerX, newPlayerY);
 
 	if (collidedActor != nullptr && collidedActor->IsActive())
 	{
-		Enemy* collidedEnemy = dynamic_cast<Enemy*>(collidedActor);
-		if (collidedEnemy)
+		switch (collidedActor->GetType())
 		{
+		case ActorType::Enemy:
+		{
+			Enemy* collidedEnemy = dynamic_cast<Enemy*>(collidedActor);
+			assert(collidedEnemy);
 			collidedEnemy->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
 			m_player.DecrementLives();
 
 			if (m_player.GetLives() < 0)
 			{
-				return true;
+				isGameDone = true;
 			}
+			break;
 		}
-
-		Money* collidedMoney = dynamic_cast<Money*>(collidedActor);
-		if (collidedMoney)
+		case ActorType::Money:
 		{
+			Money* collidedMoney = dynamic_cast<Money*>(collidedActor);
+			assert(collidedMoney);
 			collidedMoney->Remove();
 			m_player.AddMoney(collidedMoney->GetWorth());
 			m_player.SetPosition(newPlayerX, newPlayerY);
+			break;
 		}
-
-		Key* collidedKey = dynamic_cast<Key*>(collidedActor);
-		if (collidedKey)
+		case ActorType::Key:
 		{
+			Key* collidedKey = dynamic_cast<Key*>(collidedActor);
+			assert(collidedKey);
 			if (!m_player.HasKey())
 			{
 				m_player.PickupKey(collidedKey);
@@ -136,11 +143,12 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 				m_player.SetPosition(newPlayerX, newPlayerY);
 				//PlayKeyPickupSound();
 			}
+			break;
 		}
-
-		Door* collidedDoor = dynamic_cast<Door*>(collidedActor);
-		if (collidedDoor)
+		case ActorType::Door:
 		{
+			Door* collidedDoor = dynamic_cast<Door*>(collidedActor);
+			assert(collidedDoor);
 			if (!collidedDoor->IsOpen())
 			{
 				if (m_player.HasKey(collidedDoor->GetColor()))
@@ -160,14 +168,19 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 			{
 				m_player.SetPosition(newPlayerX, newPlayerY);
 			}
+			break;
 		}
-
-		Goal* collidedGoal = dynamic_cast<Goal*>(collidedActor);
-		if (collidedGoal)
+		case ActorType::Goal:
 		{
+			Goal* collidedGoal = dynamic_cast<Goal*>(collidedActor);
+			assert(collidedGoal);
 			collidedGoal->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
-			return true;
+			isGameDone = true;
+			break;
+		}
+		default:
+			break;
 		}
 	}
 	else if (m_level.IsSpace(newPlayerX, newPlayerY))
@@ -179,7 +192,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 		// wall collision, do nothing
 	}
 
-	return false;
+	return isGameDone;
 }
 
 void Game::Draw()
