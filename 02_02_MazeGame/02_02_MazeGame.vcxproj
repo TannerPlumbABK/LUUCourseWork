@@ -150,6 +150,8 @@
     <ClCompile Include="Money.cpp" />
     <ClCompile Include="PlacableActor.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PortalEntrance.cpp" />
+    <ClCompile Include="PortalExit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -163,6 +165,8 @@
     <ClInclude Include="PlacableActor.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PortalEntrance.h" />
+    <ClInclude Include="PortalExit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,8 @@
 #include "Goal.h"
 #include "Enemy.h"
 #include "AudioManager.h"
+#include "PortalEntrance.h"
+#include "PortalExit.h"
 
 using namespace std;
 
@@ -22,6 +24,7 @@ constexpr int escapeKey = 27;
 
 Game::Game()
 	: m_isGameOver(false)
+	, m_userQuit(false)
 {
 	//
 }
@@ -33,7 +36,7 @@ Game::~Game()
 
 bool Game::Load()
 {
-	return m_level.Load("Level1.txt", m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
+	return m_level.Load("Level2.txt", m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
 }
 
 void Game::Run() 
@@ -177,6 +180,21 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 			collidedGoal->Remove();
 			m_player.SetPosition(newPlayerX, newPlayerY);
 			isGameDone = true;
+			break;
+		}
+		case ActorType::PortalEntrance:
+		{
+			PortalEntrance* collidedPortal = dynamic_cast<PortalEntrance*>(collidedActor);
+			assert(collidedPortal);
+			for (int i = 0; i < (int)m_level.GetActors().size(); i++)
+			{
+				PlacableActor* actor = m_level.GetActors()[i];
+				if (actor->GetType() == ActorType::PortalExit)
+				{
+					m_player.SetPosition(actor->GetPositionX(), actor->GetPositionY());
+					break;
+				}
+			}
 			break;
 		}
 		default:

@@ -21,6 +21,9 @@ constexpr int upArrow = 72;
 constexpr int downArrow = 80;
 constexpr int escape = 27;
 constexpr int backspace = 8;
+constexpr int lowerP = 112;
+constexpr int upperP = 80;
+constexpr int space = 32;
 
 void GetLevelDimensions(int& width, int& height);
 void DisplayLevel(char* pLevel, int width, int height, int cursorX, int cursorY);
@@ -29,7 +32,7 @@ void DisplayTopBorder(int width);
 void DisplayBottomBorder(int width);
 void DisplayLeftBorder();
 void DisplayRightBorder();
-bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height);
+bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex);
 void SaveLevel(char* pLevel, int width, int height);
 void DisplayLegend();
 
@@ -37,6 +40,9 @@ int main()
 {
     int levelWidth;
     int levelHeight;
+
+    int portalEntranceIndex = -1;
+    int portalExitIndex = -1;
 
     GetLevelDimensions(levelWidth, levelHeight);
 
@@ -56,7 +62,7 @@ int main()
         system("cls");
         DisplayLevel(pLevel, levelWidth, levelHeight, cursorX, cursorY);
         DisplayLegend();
-        doneEditing = EditLevel(pLevel, cursorX, cursorY, levelWidth, levelHeight);
+        doneEditing = EditLevel(pLevel, cursorX, cursorY, levelWidth, levelHeight, portalEntranceIndex, portalExitIndex);
     }
 
     system("cls");
@@ -69,7 +75,7 @@ int main()
     pLevel = nullptr;
 }
 
-bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height)
+bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex)
 {
     int newCursorX = cursorX;
     int newCursorY = cursorY;
@@ -130,6 +136,24 @@ bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height)
         else
         {
             int index = GetIndexFromCoords(newCursorX, newCursorY, width);
+
+            // replace any existing p or P with a ' ' before adding the new one
+            if (intInput == upperP)
+            {
+                if (portalEntranceIndex != -1) pLevel[portalEntranceIndex] = ' ';
+                portalEntranceIndex = index;
+            }
+            else if (intInput == lowerP)
+            {
+                if (portalExitIndex != -1) pLevel[portalExitIndex] = ' ';
+                portalExitIndex = index;
+            }
+            else
+            {
+                if (pLevel[index] == 'p') portalExitIndex = -1;
+                else if (pLevel[index] == 'P') portalEntranceIndex = -1;
+            }
+            
             pLevel[index] = (char)intInput;
         }
     }
@@ -155,7 +179,7 @@ void SaveLevel(char* pLevel, int width, int height)
     {
         levelFile << width << endl;
         levelFile << height << endl;
-        levelFile.write(pLevel, width * height);
+        levelFile.write(pLevel, (long long)width * (long long)height);
         if (!levelFile)
         {
             cout << "Write failed." << endl;
@@ -212,6 +236,8 @@ void DisplayLegend()
     cout << "v for vertical moving enemy" << endl;
     cout << "h for horizontal moving enemy" << endl;
     cout << "e for non-moving enemy" << endl;
+    cout << "P for a portal entry (only 1 per level)" << endl;
+    cout << "p for a portal exit (only 1 per level)" << endl;
     cout << "X for end" << endl;
 }
 

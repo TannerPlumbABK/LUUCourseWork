@@ -11,6 +11,8 @@
 #include "Door.h"
 #include "Goal.h"
 #include "Money.h"
+#include "PortalEntrance.h"
+#include "PortalExit.h"
 
 using namespace std;
 
@@ -201,6 +203,14 @@ bool Level::Convert(int* playerX, int* playerY)
 				m_pActors.push_back(new Enemy(x, y, 0, 2));
 				break;
 			case ' ':
+				break;
+			case 'P':
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new PortalEntrance(x, y, ActorColor::Pink));
+				break;
+			case 'p':
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new PortalExit(x, y));
 				break;
 			default:
 				cout << "Invalid character in level file: " << m_pLevelData[index] << endl;
