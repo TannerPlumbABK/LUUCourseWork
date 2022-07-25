@@ -15,6 +15,11 @@ int main()
 	int* ptrA = &a;
 	int* ptrB = &b;
 	DisplayInput(ptrA, ptrB);
+
+	delete ptrA;
+	delete ptrB;
+	ptrA = nullptr;
+	ptrB = nullptr;
 }
 
 void CinError(string error)
