@@ -4,10 +4,11 @@ using namespace std;
 
 #define NUM_NUMBERS 5
 
+int GetBiggestNumber(int numbers[NUM_NUMBERS]);
+
 int main()
 {
     int numbers[NUM_NUMBERS];
-    int highestNumber;
 
     cout << "Enter 5 whole numbers to determine which is the largest." << endl;
 
@@ -15,12 +16,9 @@ int main()
     {
         cout << "Number " << i + 1 << ": ";
 
-        for (;;)
+        while (true)
         {
-            if (cin >> numbers[i])
-            {
-                break;
-            }
+            if (cin >> numbers[i]) break;
             else
             {
                 cout << endl << "Please enter a valid whole number." << endl;
@@ -30,24 +28,21 @@ int main()
             }
         }
     }
-    highestNumber = numbers[0];
 
-    cout << "Out of the following numbers: ";
+    cout << "The highest number you entered is: " << GetBiggestNumber(numbers) << endl;
+}
+
+int GetBiggestNumber(int numbers[NUM_NUMBERS])
+{
+    int highestNumber = numbers[0];
+
     for (int i = 0; i < NUM_NUMBERS; i++)
     {
-        cout << numbers[i];
-
-        if (i < NUM_NUMBERS - 1)
-        {
-            cout << ", ";
-        }
-
         if (numbers[i] > highestNumber)
         {
             highestNumber = numbers[i];
         }
     }
-    cout << endl;
 
-    cout << "The highest number is: " << highestNumber << endl;
+    return highestNumber;
 }

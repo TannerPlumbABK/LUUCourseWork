@@ -4,8 +4,8 @@ using namespace std;
 
 #define SUM_AVG_MAX_COUNT 3
 
-float getSum(float nums[SUM_AVG_MAX_COUNT]);
-float getAverage(float sum);
+float GetSum(float nums[SUM_AVG_MAX_COUNT]);
+float GetAverage(float sum);
 
 int main()
 {
@@ -16,12 +16,9 @@ int main()
 	for (int i = 0; i < SUM_AVG_MAX_COUNT; i++) {
 		cout << "Number " << i + 1 << ": ";
 
-		for (;;)
+		while (true)
 		{
-			if (cin >> nums[i])
-			{
-				break;
-			}
+			if (cin >> nums[i]) break;
 			else
 			{
 				cout << endl << "Please enter a number: ";
@@ -32,14 +29,11 @@ int main()
 	}
 	cout << endl;
 
-	float sum = getSum(nums);
-	float average = getAverage(sum);
-
-	cout << "Sum: " << sum << endl;
-	cout << "Average: " << average << endl;
+	cout << "Sum: " << GetSum(nums) << endl;
+	cout << "Average: " << GetAverage(GetSum(nums)) << endl;
 }
 
-float getSum(float nums[SUM_AVG_MAX_COUNT])
+float GetSum(float nums[SUM_AVG_MAX_COUNT])
 {
 	float sum = 0;
 
@@ -51,7 +45,7 @@ float getSum(float nums[SUM_AVG_MAX_COUNT])
 	return sum;
 }
 
-float getAverage(float sum)
+float GetAverage(float sum)
 {
 	return sum / SUM_AVG_MAX_COUNT;
 }

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-float getNumberCubed(float num);
+float GetNumberCubed(float num);
 
 int main()
 {
@@ -10,12 +10,9 @@ int main()
 
 	cout << "Enter a number to be cubed: ";
 
-	for (;;)
+	while (true)
 	{
-		if (cin >> num)
-		{
-			break;
-		}
+		if (cin >> num) break;
 		else
 		{
 			cout << endl << "Please enter a number: ";
@@ -24,12 +21,12 @@ int main()
 		}
 	}
 
-	float cubed = getNumberCubed(num);
+	float cubed = GetNumberCubed(num);
 
 	cout << num << " cubed is " << cubed << endl;
 }
 
-float getNumberCubed(float num)
+float GetNumberCubed(float num)
 {
 	return num * num * num;
 }

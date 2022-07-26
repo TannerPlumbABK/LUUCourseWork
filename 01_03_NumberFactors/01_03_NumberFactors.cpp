@@ -2,18 +2,17 @@
 
 using namespace std;
 
+void DisplayFactors(int num);
+
 int main()
 {
     int num;
 
-    cout << "Enter a positive whold number: ";
+    cout << "Enter a positive whole number: ";
 
-    for (;;)
+    while (true)
     {
-        if (cin >> num && num > 0)
-        {
-            break;
-        }
+        if (cin >> num && num > 0) break;
         else
         {
             cout << endl << "Please enter a valid positive whole number: ";
@@ -22,7 +21,12 @@ int main()
         }
     }
 
-    for (int i = 2; i <= num; i++)
+    DisplayFactors(num);
+}
+
+void DisplayFactors(int num)
+{
+    for (int i = 1; i <= num; i++)
     {
         if (num % i == 0)
         {
