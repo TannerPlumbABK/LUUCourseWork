@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Player.h"
 #include "Level.h"
 
@@ -19,7 +21,7 @@ public:
 	Game();
 	~Game();
 
-	bool Load();
+	bool Load(std::string levelName);
 	void Run();
 
 	bool IsGameOver() { return m_isGameOver; }

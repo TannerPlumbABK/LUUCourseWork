@@ -34,9 +34,10 @@ Game::~Game()
 	//
 }
 
-bool Game::Load()
+bool Game::Load(string levelName)
 {
-	return m_level.Load("Level2.txt", m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
+	//return m_level.Load("Level2.txt", m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
+	return m_level.Load(levelName, m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
 }
 
 void Game::Run() 
