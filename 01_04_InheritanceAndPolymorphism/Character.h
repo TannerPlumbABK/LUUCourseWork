@@ -10,49 +10,15 @@ protected:
 	Point<int> m_Position;
 	bool m_IsAlive;
 public:
-	Character(float health, int x, int y)
-		: m_Health(health)
-		, m_IsAlive(false)
-	{
-		m_Position.x = x;
-		m_Position.y = y;
-	}
+	Character(float health, int x, int y);
 
-	int GetHealth()
-	{
-		return m_Health;
-	}
-
-	int GetPositionX()
-	{
-		return m_Position.x;
-	}
-
-	int GetPositionY()
-	{
-		return m_Position.y;
-	}
+	int GetHealth();
+	int GetPositionX();
+	int GetPositionY();
 
 	virtual void Draw() = 0;
 	virtual void OutputInfo() = 0;
 
-	void Move(int x, int y)
-	{
-		m_Position.x += x;
-		m_Position.y += y;
-	}
-
-	void TakeDamage(float damage)
-	{
-		if (m_IsAlive)
-		{
-			m_Health -= damage;
-
-			if (m_Health <= 0)
-			{
-				m_Health = 0;
-				m_IsAlive = false;
-			}
-		}
-	}
+	void Move(int x, int y);
+	void TakeDamage(float damage);
 };
