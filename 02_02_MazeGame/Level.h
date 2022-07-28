@@ -30,4 +30,5 @@ public:
 	int GetHeight() { return m_height; }
 	int GetWidth() { return m_width; }
 	std::vector<PlacableActor*> GetActors() { return m_pActors; }
+	void ClearActors();
 };

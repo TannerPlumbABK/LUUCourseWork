@@ -24,6 +24,7 @@ constexpr int backspace = 8;
 constexpr int lowerP = 112;
 constexpr int upperP = 80;
 constexpr int space = 32;
+constexpr int playerSymbol = 64;
 
 void GetLevelDimensions(int& width, int& height);
 void DisplayLevel(char* pLevel, int width, int height, int cursorX, int cursorY);
@@ -32,10 +33,10 @@ void DisplayTopBorder(int width);
 void DisplayBottomBorder(int width);
 void DisplayLeftBorder();
 void DisplayRightBorder();
-bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex);
+bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex, int& playerIndex);
 void SaveLevel(char* pLevel, int width, int height);
 void DisplayLegend();
-void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, int& portalExitIndex);
+void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, int& portalExitIndex, int& playerIndex);
 
 int main()
 {
@@ -45,6 +46,7 @@ int main()
 
     int portalEntranceIndex = -1;
     int portalExitIndex = -1;
+    int playerIndex = -1;
 
     bool done = false;
 
@@ -85,10 +87,10 @@ int main()
                 levelHeight = atoi(temp);
 
                 pLevel = new char[levelWidth * levelHeight];
-                levelFile.read(pLevel, levelWidth * levelHeight);
+                levelFile.read(pLevel, (long long)levelWidth * (long long)levelHeight);
                 levelFile.close();
 
-                RunEditor(pLevel, levelWidth, levelHeight, portalEntranceIndex, portalExitIndex);
+                RunEditor(pLevel, levelWidth, levelHeight, portalEntranceIndex, portalExitIndex, playerIndex);
 
                 delete[] pLevel;
                 pLevel = nullptr;
@@ -106,7 +108,7 @@ int main()
                 pLevel[i] = ' ';
             }
 
-            RunEditor(pLevel, levelWidth, levelHeight, portalEntranceIndex, portalExitIndex);
+            RunEditor(pLevel, levelWidth, levelHeight, portalEntranceIndex, portalExitIndex, playerIndex);
 
             delete[] pLevel;
             pLevel = nullptr;
@@ -118,7 +120,7 @@ int main()
     }
 }
 
-void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, int& portalExitIndex)
+void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, int& portalExitIndex, int& playerIndex)
 {
     int cursorX = 0;
     int cursorY = 0;
@@ -129,7 +131,7 @@ void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, in
         system("cls");
         DisplayLevel(pLevel, width, height, cursorX, cursorY);
         DisplayLegend();
-        doneEditing = EditLevel(pLevel, cursorX, cursorY, width, height, portalEntranceIndex, portalExitIndex);
+        doneEditing = EditLevel(pLevel, cursorX, cursorY, width, height, portalEntranceIndex, portalExitIndex, playerIndex);
     }
 
     system("cls");
@@ -138,7 +140,7 @@ void RunEditor(char* pLevel, int width, int height, int& portalEntranceIndex, in
     SaveLevel(pLevel, width, height);
 }
 
-bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex)
+bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, int& portalEntranceIndex, int& portalExitIndex, int& playerIndex)
 {
     int newCursorX = cursorX;
     int newCursorY = cursorY;
@@ -195,6 +197,15 @@ bool EditLevel(char* pLevel, int& cursorX, int& cursorY, int width, int height, 
         else if (intInput == backspace)
         {
             // ignore
+        }
+        else if (intInput == playerSymbol)
+        {
+            int index = GetIndexFromCoords(newCursorX, newCursorY, width);
+
+            if (playerIndex != -1) pLevel[playerIndex] = ' ';
+            playerIndex = index;
+
+            pLevel[index] = (char)intInput;
         }
         else
         {
@@ -301,6 +312,7 @@ void DisplayLegend()
     cout << "e for non-moving enemy" << endl;
     cout << "P for a portal entry (only 1 per level)" << endl;
     cout << "p for a portal exit (only 1 per level)" << endl;
+    cout << "L for a life" << endl;
     cout << "X for end" << endl;
 }
 

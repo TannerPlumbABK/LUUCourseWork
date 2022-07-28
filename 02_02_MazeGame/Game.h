@@ -1,9 +1,11 @@
 #pragma once
 
-#include <string>
-
 #include "Player.h"
 #include "Level.h"
+
+constexpr int maxLevel = 5;
+constexpr int levelCompleteMoneyReward = 25;
+constexpr int startingShopOdds = 0;
 
 class Game
 {
@@ -12,6 +14,8 @@ private:
 	Level m_level;
 	bool m_isGameOver;
 	bool m_userQuit;
+	int m_currentLevelNum;
+	int m_shopOdds;
 
 	bool Update();
 	void Draw();
@@ -21,12 +25,15 @@ public:
 	Game();
 	~Game();
 
-	bool Load(std::string levelName);
+	bool Load(int levelNum);
 	void Run();
 
 	bool IsGameOver() { return m_isGameOver; }
 	bool DidUserQuit() { return m_userQuit; }
 
 	int GetPlayerLives() { return m_player.GetLives(); }
+
+	void DisplayDirections();
+	void LoadShop();
 };
 

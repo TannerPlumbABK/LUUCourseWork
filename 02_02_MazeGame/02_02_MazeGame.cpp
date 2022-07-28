@@ -7,32 +7,39 @@
 
 using namespace std;
 
+void DrawFancyLogo();
+
 int main()
 {
 	Game myGame;
 	string levelToLoad = "Level";
 
-	cout << "What level would you like to play?" << endl;
-	cout << "1 - Level 1" << endl;
-	cout << "2 - Level 2" << endl;
+
+	DrawFancyLogo();
+	cout << "What would you like to do?" << endl;
+	cout << "1 - Play" << endl;
+	cout << "2 - Quit" << endl;
 	cout << "Choice: ";
 
-	int levelInput;
+	int choice;
 	while (true)
 	{
-		if (cin >> levelInput && levelInput > 0 && levelInput < 3) break;
+		if (cin >> choice && choice > 0 && choice < 3) break;
 		else
 		{
-			cout << "Pick a valid level: ";
+			cout << "Pick a valid option: ";
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
 	}
 
-	levelToLoad.append(to_string(levelInput));
-	levelToLoad.append(".txt");
+	if (choice == 2)
+	{
+		cout << "Thanks for playing!" << endl;
+		return 0;
+	}
 
-	if (myGame.Load(levelToLoad))
+	if (myGame.Load(1))
 	{
 		while (!myGame.IsGameOver())
 		{
@@ -90,4 +97,19 @@ int main()
 	AudioManager::DestroyInstance();
 
 	return 0;
+}
+
+void DrawFancyLogo()
+{
+	cout << endl << endl;
+
+	cout << "||          ||   ||||||   |||||||||| ||||||||||     |||||||| ||    || ||      || ||      || |||||||||| ||||||||" << endl;
+	cout << "||||      |||| ||      ||         || ||             ||    || ||    || ||||    || ||||    || ||         ||    ||" << endl;
+	cout << "||  ||  ||  || ||      ||       ||   ||             ||   ||  ||    || || ||   || || ||   || ||         ||   || " << endl;
+	cout << "||    ||    || ||      ||     ||     ||||||         ||||||   ||    || ||  ||  || ||  ||  || ||||||     ||||||  " << endl;
+	cout << "||          || ||||||||||   ||       ||             ||  ||   ||    || ||   || || ||   || || ||         ||  ||  " << endl;
+	cout << "||          || ||      || ||         ||             ||   ||  ||    || ||    |||| ||    |||| ||         ||   || " << endl;
+	cout << "||          || ||      || |||||||||| ||||||||||     ||    || |||||||| ||      || ||      || |||||||||| ||    ||" << endl;
+
+	cout << endl << endl;
 }

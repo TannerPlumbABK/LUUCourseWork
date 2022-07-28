@@ -68,6 +68,12 @@ public:
 		Beep(500, 75);
 	}
 
+	void PlayLifePickupSound()
+	{
+		Beep(1568, 50);
+		Beep(1568, 200);
+	}
+
 	void PlayWinSound()
 	{
 		Beep(1568, 100);

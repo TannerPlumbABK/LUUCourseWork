@@ -13,6 +13,7 @@
 #include "Money.h"
 #include "PortalEntrance.h"
 #include "PortalExit.h"
+#include "Life.h"
 
 using namespace std;
 
@@ -115,7 +116,6 @@ PlacableActor* Level::UpdateActors(int x, int y)
 
 		if (x == (*actor)->GetPositionX() && y == (*actor)->GetPositionY())
 		{
-			assert(collidedActor == nullptr);
 			collidedActor = (*actor);
 		}
 	}
@@ -180,7 +180,7 @@ bool Level::Convert(int* playerX, int* playerY)
 				break;
 			case '$':
 				m_pLevelData[index] = ' ';
-				m_pActors.push_back(new Money(x, y, 1 + rand() % 5));
+				m_pActors.push_back(new Money(x, y, 1 + rand() % 10));
 				break;
 			case '@':
 				m_pLevelData[index] = ' ';
@@ -202,8 +202,6 @@ bool Level::Convert(int* playerX, int* playerY)
 				m_pLevelData[index] = ' ';
 				m_pActors.push_back(new Enemy(x, y, 0, 2));
 				break;
-			case ' ':
-				break;
 			case 'P':
 				m_pLevelData[index] = ' ';
 				m_pActors.push_back(new PortalEntrance(x, y, ActorColor::Pink));
@@ -211,6 +209,12 @@ bool Level::Convert(int* playerX, int* playerY)
 			case 'p':
 				m_pLevelData[index] = ' ';
 				m_pActors.push_back(new PortalExit(x, y));
+				break;
+			case 'L':
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new Life(x, y));
+				break;
+			case ' ':
 				break;
 			default:
 				cout << "Invalid character in level file: " << m_pLevelData[index] << endl;
@@ -221,4 +225,9 @@ bool Level::Convert(int* playerX, int* playerY)
 	}
 
 	return anyWarnings;
+}
+
+void Level::ClearActors()
+{
+	m_pActors.clear();
 }

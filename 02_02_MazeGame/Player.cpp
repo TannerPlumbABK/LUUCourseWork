@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "Player.h"
 #include "Key.h"
@@ -49,4 +50,20 @@ void Player::DropKey()
 void Player::Draw()
 {
 	cout << "@";
+}
+
+void Player::DisplayPlayerInfo()
+{
+	string key = "No Key";
+
+	if (HasKey())
+	{
+		if (m_pCurrentKey->GetColor() == ActorColor::Blue) { key = "Blue"; }
+		else if (m_pCurrentKey->GetColor() == ActorColor::Red) { key = "Red"; }
+		else if (m_pCurrentKey->GetColor() == ActorColor::Green) { key = "Green"; }
+	}
+
+	cout << "Lives: " << GetLives() << endl;
+	cout << "Money: " << GetMoney() << endl;
+	cout << "Key: " << key << endl;
 }

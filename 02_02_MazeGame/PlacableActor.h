@@ -23,7 +23,8 @@ enum class ActorType
 	Money,
 	Player,
 	PortalEntrance,
-	PortalExit
+	PortalExit,
+	Life
 };
 
 class PlacableActor
