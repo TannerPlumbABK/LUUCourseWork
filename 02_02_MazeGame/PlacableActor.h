@@ -9,6 +9,7 @@ enum class ActorColor
 	Green = 10,
 	Red = 12,
 	Pink = 13,
+	Yellow = 14,
 	SolidGreen = 34,
 	SolidRed = 68,
 	SolidBlue = 153

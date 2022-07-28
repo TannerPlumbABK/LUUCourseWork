@@ -3,9 +3,10 @@
 #include "Player.h"
 #include "Level.h"
 
-constexpr int maxLevel = 5;
+constexpr int maxLevel = 3;
 constexpr int levelCompleteMoneyReward = 25;
 constexpr int startingShopOdds = 0;
+constexpr int increasingOddsPerLevel = 100;
 
 class Game
 {

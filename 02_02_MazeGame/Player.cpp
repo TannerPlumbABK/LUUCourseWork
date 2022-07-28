@@ -54,16 +54,56 @@ void Player::Draw()
 
 void Player::DisplayPlayerInfo()
 {
-	string key = "No Key";
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	string key = "None ";
 
+	cout << (char)219 << " ";
+	SetConsoleTextAttribute(console, (int)ActorColor::Red);
+	cout << (char)3 << " " << GetLives() << endl;
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+
+	cout << (char)219 << " ";
+	SetConsoleTextAttribute(console, (int)ActorColor::Yellow);
+	cout << "$" << GetMoney() << endl;
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+
+
+	cout << (char)219 << " ";
 	if (HasKey())
 	{
-		if (m_pCurrentKey->GetColor() == ActorColor::Blue) { key = "Blue"; }
-		else if (m_pCurrentKey->GetColor() == ActorColor::Red) { key = "Red"; }
-		else if (m_pCurrentKey->GetColor() == ActorColor::Green) { key = "Green"; }
+		if (m_pCurrentKey->GetColor() == ActorColor::Blue) 
+		{
+			key = "Blue ";
+			SetConsoleTextAttribute(console, (int)ActorColor::Blue);
+		}
+		else if (m_pCurrentKey->GetColor() == ActorColor::Red) 
+		{ 
+			key = "Red  ";
+			SetConsoleTextAttribute(console, (int)ActorColor::Red);
+		}
+		else if (m_pCurrentKey->GetColor() == ActorColor::Green) 
+		{ 
+			key = "Green";
+			SetConsoleTextAttribute(console, (int)ActorColor::Green);
+		}
 	}
-
-	cout << "Lives: " << GetLives() << endl;
-	cout << "Money: " << GetMoney() << endl;
 	cout << "Key: " << key << endl;
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+
+
+
+	/*
+	
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console, (int)m_color);
+	std::cout << "$";
+	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+	*/
+
+
+	//for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
+	//cout << (char)219 << " WASD or Arrow Keys to move " << (char)219 << endl;
+	//cout << (char)219 << " Z to drop a key            " << (char)219 << endl;
+	//cout << (char)219 << " R to restart level         " << (char)219 << endl;
+	//for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
 }

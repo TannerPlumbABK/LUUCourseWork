@@ -12,8 +12,6 @@ void DrawFancyLogo();
 int main()
 {
 	Game myGame;
-	string levelToLoad = "Level";
-
 
 	DrawFancyLogo();
 	cout << "What would you like to do?" << endl;

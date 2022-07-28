@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <conio.h>
 #define NOMINMAX
 #include <Windows.h>
@@ -65,35 +65,26 @@ void Game::Run()
 
 bool Game::Update()
 {
-	char input = (char)_getch();
-	int arrowInput = 0;
+	char input = _getch();
+
 	int newPlayerX = m_player.GetPositionX();
 	int newPlayerY = m_player.GetPositionY();
 
-	if (input == arrowInput)
-	{
-		arrowInput = _getch();
-	}
+	if (input == 0 || input == 0xE0) input = _getch();
 
-	if ((input == arrowInput && arrowInput == leftArrow) ||
-		(char)input == 'A' || (char)input == 'a')
+	if (input == leftArrow || (char)input == 'A' || (char)input == 'a') newPlayerX -= 1;
+	else if (input == rightArrow || (char)input == 'D' || (char)input == 'd') newPlayerX += 1;
+	else if (input == upArrow || (char)input == 'W' || (char)input == 'w') newPlayerY -= 1;
+	else if (input == downArrow || (char)input == 'S' || (char)input == 's') newPlayerY += 1;
+	else if ((char)input == 'r' || (char)input == 'R')
 	{
-		newPlayerX -= 1;
-	}
-	else if ((input == arrowInput && arrowInput == rightArrow) ||
-		(char)input == 'D' || (char)input == 'd')
-	{
-		newPlayerX += 1;
-	}
-	else if ((input == arrowInput && arrowInput == upArrow) ||
-		(char)input == 'W' || (char)input == 'w')
-	{
-		newPlayerY -= 1;
-	}
-	else if ((input == arrowInput && arrowInput == downArrow) ||
-		(char)input == 'S' || (char)input == 's')
-	{
-		newPlayerY += 1;
+		m_player.DecrementLives();
+
+		if (m_player.GetLives() <= 0) return true;
+
+		m_level.ClearActors();
+		Load(m_currentLevelNum);
+		return false;
 	}
 	else if (input == escapeKey)
 	{
@@ -179,10 +170,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 				}
 				else AudioManager::GetInstance()->PlayDoorClosedSound();
 			}
-			else
-			{
-				m_player.SetPosition(newPlayerX, newPlayerY);
-			}
+			else m_player.SetPosition(newPlayerX, newPlayerY);
 			break;
 		}
 		case ActorType::Goal:
@@ -207,7 +195,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 
 					m_shopOdds = 0;
 				}
-				else m_shopOdds += 15;
+				else m_shopOdds += increasingOddsPerLevel;
 
 				m_level.ClearActors();
 				Load(m_currentLevelNum);
@@ -224,8 +212,6 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 				PlacableActor* actor = m_level.GetActors()[i];
 				if (actor->GetType() == ActorType::PortalExit)
 				{
-					/*collidedPortal->Remove();
-					actor->Remove();*/
 					m_player.SetPosition(actor->GetPositionX(), actor->GetPositionY());
 					break;
 				}
@@ -277,14 +263,19 @@ void Game::Draw()
 	SetConsoleCursorPosition(console, currentCursorPosition);
 
 	// display some extra info
+	cout << endl;
+	cout << "            Level " << m_currentLevelNum << endl << endl;
 	DisplayDirections();
 	m_player.DisplayPlayerInfo();
 }
 
 void Game::DisplayDirections()
 {
-	cout << "Level " << m_currentLevelNum << endl;
-	cout << "WASD or Arrow Keys to move" << endl;
+	for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
+	cout << (char)219 << " WASD or Arrow Keys to move " << (char)219 << endl;
+	cout << (char)219 << " Z to drop a key            " << (char)219 << endl;
+	cout << (char)219 << " R to restart level         " << (char)219 << endl;
+	for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
 	cout << endl;
 }
 
@@ -323,53 +314,51 @@ void Game::LoadShop()
 
 		int choice;
 		while (true) if (cin >> choice) break;
-		if (cin >> choice)
-		{
-			cout << endl;
 
-			switch (choice)
+		cout << endl;
+
+		switch (choice)
+		{
+		case 1:
+			if (m_player.GetMoney() >= 50)
 			{
-			case 1:
-				if (m_player.GetMoney() >= 50)
-				{
-					m_player.AddLives(1);
-					m_player.SpendMoney(50);
-					cout << "Your purchased 1 life for 50 coins!" << endl;
-				}
-				else
-				{
-					cout << "You don't have enough money for that." << endl;
-				}
-				break;
-			case 2:
-				if (m_player.GetMoney() >= 100)
-				{
-					m_player.AddLives(3);
-					m_player.SpendMoney(100);
-					cout << "Your purchased 3 lives for 100 coins!" << endl;
-				}
-				else
-				{
-					cout << "You don't have enough money for that." << endl;
-				}
-				break;
-			case 3:
-				if (m_player.GetMoney() >= 150)
-				{
-					m_player.AddLives(5);
-					m_player.SpendMoney(150);
-					cout << "Your purchased 5 lives for 150 coins!" << endl;
-				}
-				else
-				{
-					cout << "You don't have enough money for that." << endl;
-				}
-				break;
-			case 4:
-			default:
-				doneShopping = true;
-				break;
+				m_player.AddLives(1);
+				m_player.SpendMoney(50);
+				cout << "Your purchased 1 life for 50 coins!" << endl;
 			}
+			else
+			{
+				cout << "You don't have enough money for that." << endl;
+			}
+			break;
+		case 2:
+			if (m_player.GetMoney() >= 100)
+			{
+				m_player.AddLives(3);
+				m_player.SpendMoney(100);
+				cout << "Your purchased 3 lives for 100 coins!" << endl;
+			}
+			else
+			{
+				cout << "You don't have enough money for that." << endl;
+			}
+			break;
+		case 3:
+			if (m_player.GetMoney() >= 150)
+			{
+				m_player.AddLives(5);
+				m_player.SpendMoney(150);
+				cout << "Your purchased 5 lives for 150 coins!" << endl;
+			}
+			else
+			{
+				cout << "You don't have enough money for that." << endl;
+			}
+			break;
+		case 4:
+		default:
+			doneShopping = true;
+			break;
 		}
 
 		cout << endl;
