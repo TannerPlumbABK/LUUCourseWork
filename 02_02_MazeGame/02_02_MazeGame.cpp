@@ -14,10 +14,11 @@ int main()
 	Game myGame;
 
 	DrawFancyLogo();
-	cout << "What would you like to do?" << endl;
-	cout << "1 - Play" << endl;
-	cout << "2 - Quit" << endl;
-	cout << "Choice: ";
+	cout << "\tWhat would you like to do?" << endl;
+	cout << "\t1 - Play" << endl;
+	cout << "\t2 - Quit" << endl;
+	cout << "\t------------------" << endl;
+	cout << "\tChoice: ";
 
 	int choice;
 	while (true)
@@ -25,7 +26,7 @@ int main()
 		if (cin >> choice && choice > 0 && choice < 3) break;
 		else
 		{
-			cout << "Pick a valid option: ";
+			cout << "\tPick a valid option: ";
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		}
@@ -33,7 +34,7 @@ int main()
 
 	if (choice == 2)
 	{
-		cout << "Thanks for playing!" << endl;
+		cout << "\n\tThanks for playing!" << endl;
 		return 0;
 	}
 
@@ -101,13 +102,13 @@ void DrawFancyLogo()
 {
 	cout << endl << endl;
 
-	cout << "||          ||   ||||||   |||||||||| ||||||||||     |||||||| ||    || ||      || ||      || |||||||||| ||||||||" << endl;
-	cout << "||||      |||| ||      ||         || ||             ||    || ||    || ||||    || ||||    || ||         ||    ||" << endl;
-	cout << "||  ||  ||  || ||      ||       ||   ||             ||   ||  ||    || || ||   || || ||   || ||         ||   || " << endl;
-	cout << "||    ||    || ||      ||     ||     ||||||         ||||||   ||    || ||  ||  || ||  ||  || ||||||     ||||||  " << endl;
-	cout << "||          || ||||||||||   ||       ||             ||  ||   ||    || ||   || || ||   || || ||         ||  ||  " << endl;
-	cout << "||          || ||      || ||         ||             ||   ||  ||    || ||    |||| ||    |||| ||         ||   || " << endl;
-	cout << "||          || ||      || |||||||||| ||||||||||     ||    || |||||||| ||      || ||      || |||||||||| ||    ||" << endl;
+	cout << " ||          ||   ||||||   |||||||||| ||||||||||     |||||||| ||    || ||      || ||      || |||||||||| ||||||||" << endl;
+	cout << " ||||      |||| ||      ||         || ||             ||    || ||    || ||||    || ||||    || ||         ||    ||" << endl;
+	cout << " ||  ||  ||  || ||      ||       ||   ||             ||   ||  ||    || || ||   || || ||   || ||         ||   || " << endl;
+	cout << " ||    ||    || ||      ||     ||     ||||||         ||||||   ||    || ||  ||  || ||  ||  || ||||||     ||||||  " << endl;
+	cout << " ||          || ||||||||||   ||       ||             ||  ||   ||    || ||   || || ||   || || ||         ||  ||  " << endl;
+	cout << " ||          || ||      || ||         ||             ||   ||  ||    || ||    |||| ||    |||| ||         ||   || " << endl;
+	cout << " ||          || ||      || |||||||||| ||||||||||     ||    || |||||||| ||      || ||      || |||||||||| ||    ||" << endl;
 
 	cout << endl << endl;
 }

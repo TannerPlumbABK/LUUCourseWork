@@ -89,21 +89,4 @@ void Player::DisplayPlayerInfo()
 	}
 	cout << "Key: " << key << endl;
 	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
-
-
-
-	/*
-	
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, (int)m_color);
-	std::cout << "$";
-	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
-	*/
-
-
-	//for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
-	//cout << (char)219 << " WASD or Arrow Keys to move " << (char)219 << endl;
-	//cout << (char)219 << " Z to drop a key            " << (char)219 << endl;
-	//cout << (char)219 << " R to restart level         " << (char)219 << endl;
-	//for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
 }
