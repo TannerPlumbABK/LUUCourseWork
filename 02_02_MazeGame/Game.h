@@ -24,15 +24,14 @@ private:
 
 public:
 	Game();
-	~Game();
 
 	bool Load(int levelNum);
 	void Run();
 
-	bool IsGameOver() { return m_isGameOver; }
-	bool DidUserQuit() { return m_userQuit; }
+	bool IsGameOver();
+	bool DidUserQuit();
 
-	int GetPlayerLives() { return m_player.GetLives(); }
+	int GetPlayerLives();
 
 	void DisplayDirections();
 	void LoadShop();

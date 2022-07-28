@@ -44,10 +44,10 @@ public:
 	int* GetPositionYPointer();
 	void SetPosition(int x, int y);
 
-	ActorColor GetColor() { return m_color; }
+	ActorColor GetColor();
 
-	void Remove() { m_isActive = false; }
-	bool IsActive() { return m_isActive; }
+	void Remove();
+	bool IsActive();
 	void Place(int x, int y);
 
 	virtual ActorType GetType() = 0;

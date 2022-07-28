@@ -113,11 +113,7 @@ PlacableActor* Level::UpdateActors(int x, int y)
 	for (auto actor = m_pActors.begin(); actor != m_pActors.end(); ++actor)
 	{
 		(*actor)->Update();
-
-		if (x == (*actor)->GetPositionX() && y == (*actor)->GetPositionY())
-		{
-			collidedActor = (*actor);
-		}
+		if (x == (*actor)->GetPositionX() && y == (*actor)->GetPositionY()) collidedActor = (*actor); 
 	}
 
 	return collidedActor;
@@ -225,6 +221,26 @@ bool Level::Convert(int* playerX, int* playerY)
 	}
 
 	return anyWarnings;
+}
+
+int Level::GetIndexFromCoords(int x, int y) 
+{ 
+	return x + y * m_width; 
+}
+
+int Level::GetHeight()
+{ 
+	return m_height; 
+}
+
+int Level::GetWidth()
+{ 
+	return m_width; 
+}
+
+vector<PlacableActor*> Level::GetActors() 
+{ 
+	return m_pActors; 
 }
 
 void Level::ClearActors()

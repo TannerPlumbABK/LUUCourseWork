@@ -9,7 +9,7 @@ private:
 
 public:
 	Money(int x, int y, int worth, ActorColor color = ActorColor::Yellow);
-	virtual ActorType GetType() override { return ActorType::Money; }
-	int GetWorth() const { return m_worth; }
+	virtual ActorType GetType() override;
+	int GetWorth() const;
 	virtual void Draw() override;
 };

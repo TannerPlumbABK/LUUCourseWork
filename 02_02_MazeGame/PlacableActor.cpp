@@ -40,6 +40,21 @@ void PlacableActor::SetPosition(int x, int y)
 	m_pPosition->y = y;
 }
 
+ActorColor PlacableActor::GetColor()
+{ 
+	return m_color; 
+}
+
+void PlacableActor::Remove()
+{ 
+	m_isActive = false; 
+}
+
+bool PlacableActor::IsActive()
+{ 
+	return m_isActive; 
+}
+
 void PlacableActor::Place(int x, int y)
 {
 	m_pPosition->x = x;

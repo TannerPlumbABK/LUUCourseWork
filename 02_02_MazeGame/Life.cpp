@@ -9,6 +9,11 @@ Life::Life(int x, int y, ActorColor color)
 	//
 }
 
+ActorType Life::GetType()
+{
+	return ActorType::Life;
+}
+
 void Life::Draw()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);

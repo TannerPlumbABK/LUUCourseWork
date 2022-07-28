@@ -3,8 +3,8 @@
 class PortalExit : public PlacableActor
 {
 public:
-	PortalExit(int x, int y) : PlacableActor(x, y) { }
-	virtual ActorType GetType() override { return ActorType::PortalExit; }
+	PortalExit(int x, int y);
+	virtual ActorType GetType() override;
 	virtual void Draw() override;
 };
 

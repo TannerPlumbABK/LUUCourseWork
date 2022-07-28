@@ -37,11 +37,6 @@ Game::Game()
 	//
 }
 
-Game::~Game()
-{
-	//
-}
-
 bool Game::Load(int levelNum)
 {
 	string levelName = "Level";
@@ -54,13 +49,23 @@ bool Game::Load(int levelNum)
 void Game::Run() 
 {
 	Draw();
-
 	m_isGameOver = Update();
+	if (m_isGameOver) Draw();
+}
 
-	if (m_isGameOver)
-	{
-		Draw();
-	}
+bool Game::IsGameOver()
+{ 
+	return m_isGameOver; 
+}
+
+bool Game::DidUserQuit()
+{ 
+	return m_userQuit; 
+}
+
+int Game::GetPlayerLives()
+{ 
+	return m_player.GetLives();
 }
 
 bool Game::Update()
@@ -91,20 +96,11 @@ bool Game::Update()
 		m_userQuit = true;
 		return true;
 	}
-	else if ((char)input == 'Z' || (char)input == 'z')
-	{
-		m_player.DropKey();
-	}
+	else if ((char)input == 'Z' || (char)input == 'z') m_player.DropKey();
 
 	// if position didn't change
-	if (newPlayerX == m_player.GetPositionX() && newPlayerY == m_player.GetPositionY())
-	{
-		return false;
-	}
-	else
-	{
-		return HandleCollision(newPlayerX, newPlayerY);
-	}
+	if (newPlayerX == m_player.GetPositionX() && newPlayerY == m_player.GetPositionY()) return false;
+	else return HandleCollision(newPlayerX, newPlayerY);
 }
 
 bool Game::HandleCollision(int newPlayerX, int newPlayerY)
@@ -125,10 +121,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 			m_player.SetPosition(newPlayerX, newPlayerY);
 			m_player.DecrementLives();
 
-			if (m_player.GetLives() <= 0)
-			{
-				isGameDone = true;
-			}
+			if (m_player.GetLives() <= 0) isGameDone = true;
 			break;
 		}
 		case ActorType::Money:
@@ -186,7 +179,7 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 				m_currentLevelNum += 1;
 				m_player.AddMoney(levelCompleteMoneyReward);
 
-				srand(time(nullptr));
+				srand((unsigned int)time(nullptr));
 				int i = (rand() % 100) + 1;
 				if (i <= m_shopOdds)
 				{
@@ -232,14 +225,8 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 			break;
 		}
 	}
-	else if (m_level.IsSpace(newPlayerX, newPlayerY))
-	{
-		m_player.SetPosition(newPlayerX, newPlayerY);
-	}
-	else if (m_level.IsWall(newPlayerX, newPlayerY))
-	{
-		// wall collision, do nothing
-	}
+	else if (m_level.IsSpace(newPlayerX, newPlayerY)) m_player.SetPosition(newPlayerX, newPlayerY);
+	else if (m_level.IsWall(newPlayerX, newPlayerY)) { /* do nothing */ }
 
 	return isGameDone;
 }
@@ -326,10 +313,7 @@ void Game::LoadShop()
 				m_player.SpendMoney(50);
 				cout << "Your purchased 1 life for 50 coins!" << endl;
 			}
-			else
-			{
-				cout << "You don't have enough money for that." << endl;
-			}
+			else cout << "You don't have enough money for that." << endl; 
 			break;
 		case 2:
 			if (m_player.GetMoney() >= 100)
@@ -338,10 +322,7 @@ void Game::LoadShop()
 				m_player.SpendMoney(100);
 				cout << "Your purchased 3 lives for 100 coins!" << endl;
 			}
-			else
-			{
-				cout << "You don't have enough money for that." << endl;
-			}
+			else cout << "You don't have enough money for that." << endl; 
 			break;
 		case 3:
 			if (m_player.GetMoney() >= 150)
@@ -350,10 +331,7 @@ void Game::LoadShop()
 				m_player.SpendMoney(150);
 				cout << "Your purchased 5 lives for 150 coins!" << endl;
 			}
-			else
-			{
-				cout << "You don't have enough money for that." << endl;
-			}
+			else cout << "You don't have enough money for that." << endl;
 			break;
 		case 4:
 		default:

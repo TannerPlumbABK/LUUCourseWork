@@ -16,6 +16,11 @@ Player::Player()
 	, m_lives(startingLives)
 {}
 
+ActorType Player::GetType()
+{
+	return ActorType::Player;
+}
+
 bool Player::HasKey()
 {
 	return m_pCurrentKey != nullptr;
@@ -47,6 +52,36 @@ void Player::DropKey()
 	}
 }
 
+void Player::AddMoney(int money)
+{ 
+	m_money += money; 
+}
+
+void Player::SpendMoney(int money)
+{ 
+	m_money -= money; 
+}
+
+int Player::GetMoney()
+{ 
+	return m_money; 
+}
+
+void Player::DecrementLives(int lives)
+{ 
+	m_lives -= lives; 
+}
+
+void Player::AddLives(int lives)
+{ 
+	m_lives += lives; 
+}
+
+int Player::GetLives()
+{ 
+	return m_lives; 
+}
+
 void Player::Draw()
 {
 	cout << "@";
@@ -55,7 +90,7 @@ void Player::Draw()
 void Player::DisplayPlayerInfo()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	string key = "None ";
+	string key = "None";
 
 	cout << (char)219 << " ";
 	SetConsoleTextAttribute(console, (int)ActorColor::Red);
@@ -73,12 +108,12 @@ void Player::DisplayPlayerInfo()
 	{
 		if (m_pCurrentKey->GetColor() == ActorColor::Blue) 
 		{
-			key = "Blue ";
+			key = "Blue";
 			SetConsoleTextAttribute(console, (int)ActorColor::Blue);
 		}
 		else if (m_pCurrentKey->GetColor() == ActorColor::Red) 
 		{ 
-			key = "Red  ";
+			key = "Red";
 			SetConsoleTextAttribute(console, (int)ActorColor::Red);
 		}
 		else if (m_pCurrentKey->GetColor() == ActorColor::Green) 

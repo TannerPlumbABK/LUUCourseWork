@@ -1,6 +1,18 @@
 #include <iostream>
 #include <Windows.h>
+
 #include "PortalEntrance.h"
+
+PortalEntrance::PortalEntrance(int x, int y, ActorColor color)
+	: PlacableActor(x, y, color) 
+{ 
+	//
+}
+
+ActorType PortalEntrance::GetType()
+{
+	return ActorType::PortalEntrance;
+}
 
 void PortalEntrance::Draw()
 {

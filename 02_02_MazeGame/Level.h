@@ -14,7 +14,7 @@ private:
 	std::vector<PlacableActor*> m_pActors;
 
 	bool Convert(int* playerX, int* playerY);
-	int GetIndexFromCoords(int x, int y) { return x + y * m_width; }
+	int GetIndexFromCoords(int x, int y);
 
 public:
 	Level();
@@ -27,8 +27,8 @@ public:
 	bool IsSpace(int x, int y);
 	bool IsWall(int x, int y);
 
-	int GetHeight() { return m_height; }
-	int GetWidth() { return m_width; }
-	std::vector<PlacableActor*> GetActors() { return m_pActors; }
+	int GetHeight();
+	int GetWidth();
+	std::vector<PlacableActor*> GetActors();
 	void ClearActors();
 };

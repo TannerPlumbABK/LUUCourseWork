@@ -40,15 +40,9 @@ int main()
 
 	if (myGame.Load(1))
 	{
-		while (!myGame.IsGameOver())
-		{
-			myGame.Run();
-		}
+		while (!myGame.IsGameOver()) myGame.Run(); 
 
-		if (myGame.DidUserQuit())
-		{
-			cout << "Thanks for playing!" << endl;
-		}
+		if (myGame.DidUserQuit()) cout << "Thanks for playing!" << endl; 
 		else if (myGame.GetPlayerLives() <= 0)
 		{
 			cout << "You lose!" << endl;
@@ -88,10 +82,7 @@ int main()
 			return 0;
 		}
 	}
-	else
-	{
-		cout << "Game did not load. Teminating now." << endl;
-	}
+	else cout << "Game did not load. Teminating now." << endl; 
 
 	AudioManager::DestroyInstance();
 

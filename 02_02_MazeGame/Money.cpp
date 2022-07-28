@@ -10,6 +10,16 @@ Money::Money(int x, int y, int worth, ActorColor color)
 	//
 }
 
+ActorType Money::GetType()
+{
+	return ActorType::Money;
+}
+
+int Money::GetWorth() const
+{ 
+	return m_worth; 
+}
+
 void Money::Draw()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
