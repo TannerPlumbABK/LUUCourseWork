@@ -3,6 +3,7 @@
 #include <string>
 #include <Windows.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "Level.h"
 #include "Player.h"
@@ -86,7 +87,7 @@ void Level::Draw()
 		for (int x = 0; x < GetWidth(); x++)
 		{
 			int indexToPrint = GetIndexFromCoords(x, y);
-			cout << m_pLevelData[indexToPrint];
+			printf("%c", m_pLevelData[indexToPrint]);
 		}
 
 		cout << endl;
