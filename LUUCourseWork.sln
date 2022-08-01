@@ -27,7 +27,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_02_MazeGame", "02_02_Maz
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_02_MazeGame_LevelEditor", "02_02_MazeGame_LevelEditor\02_02_MazeGame_LevelEditor.vcxproj", "{DC142476-33DC-42CA-A8C5-49C24318A5CA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_04_Algorithms", "02_04_Algorithms\02_04_Algorithms.vcxproj", "{C1D4E356-303E-4F30-9879-5EDC3B127E8B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_01_Algorithms", "03_01_Algorithms\03_01_Algorithms.vcxproj", "{706FD8AB-A68B-431B-8047-487A700BBCBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,14 +133,14 @@ Global
 		{DC142476-33DC-42CA-A8C5-49C24318A5CA}.Release|x64.Build.0 = Release|x64
 		{DC142476-33DC-42CA-A8C5-49C24318A5CA}.Release|x86.ActiveCfg = Release|Win32
 		{DC142476-33DC-42CA-A8C5-49C24318A5CA}.Release|x86.Build.0 = Release|Win32
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Debug|x64.ActiveCfg = Debug|x64
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Debug|x64.Build.0 = Debug|x64
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Debug|x86.ActiveCfg = Debug|Win32
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Debug|x86.Build.0 = Debug|Win32
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Release|x64.ActiveCfg = Release|x64
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Release|x64.Build.0 = Release|x64
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Release|x86.ActiveCfg = Release|Win32
-		{C1D4E356-303E-4F30-9879-5EDC3B127E8B}.Release|x86.Build.0 = Release|Win32
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Debug|x64.ActiveCfg = Debug|x64
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Debug|x64.Build.0 = Debug|x64
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Debug|x86.ActiveCfg = Debug|Win32
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Debug|x86.Build.0 = Debug|Win32
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Release|x64.ActiveCfg = Release|x64
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Release|x64.Build.0 = Release|x64
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Release|x86.ActiveCfg = Release|Win32
+		{706FD8AB-A68B-431B-8047-487A700BBCBD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
