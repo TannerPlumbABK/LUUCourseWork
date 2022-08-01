@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="03_01_Algorithms.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AStar.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

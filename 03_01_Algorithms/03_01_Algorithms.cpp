@@ -23,6 +23,8 @@ Bubble Sort = O(n^2): Array[4] = 16 runs, Array[16] = 256 runs, Array[100] = 100
 #include <Windows.h>
 #include <stdio.h>
 
+#include "AStar.h"
+
 #define ARRAY_SIZE 100
 
 using namespace std;
@@ -53,6 +55,9 @@ int BinarySearch(int arr[], int low, int high, int searchKey);
 void SolveTowerOfHanoi(int numDiscs, int stackOne, int stackTwo, int stackThree, int& numMoves);
 void TowerOfHanoi(int numDisks);
 
+// A* Search
+void AStarSearch();
+
 /***************************************************************
 ***************************** MAIN *****************************
 ****************************************************************/
@@ -66,7 +71,7 @@ int main()
 		cout << "0. Quit" << endl;
 		cout << "1. Sorting Algorithms" << endl;
 		cout << "2. Searching Algorithms" << endl;
-		cout << "3. CHALLENGE: Find Path" << endl;
+		cout << "3. CHALLENGE: Find Path (A* Search)" << endl;
 		cout << "6. Compare All Sorts" << endl;
 		cout << "7. Compare All Searches" << endl;
 		cout << "9. Tower of Hanoi" << endl;
@@ -96,7 +101,8 @@ int main()
 			CinSearches();
 			break;
 		case 3:
-			//
+			AStarSearch();
+			system("pause");
 			break;
 		case 6:
 		{
@@ -633,4 +639,34 @@ void TowerOfHanoi(int numDiscs)
 	int numMoves = 0;
 	SolveTowerOfHanoi(numDiscs, 1, 3, 2, numMoves);
 	cout << "Number of moves made: " << numMoves << endl;
+}
+
+/***************************************************************
+************************ TOWER OF HANOI ************************
+****************************************************************/
+void AStarSearch()
+{
+	cout << endl;
+
+	AStar aStar;
+	array<array<int, 10>, 10> map{ {
+		{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 0, 1, 1, 0, 0, 0, 1, 1, 1 },
+		{ 1, 0, 1, 1, 0, 1, 0, 0, 0, 1 },
+		{ 1, 0, 1, 1, 0, 1, 1, 1, 0, 1 },
+		{ 1, 0, 1, 1, 0, 1, 1, 1, 0, 1 },
+		{ 1, 0, 1, 1, 0, 1, 1, 1, 0, 1 },
+		{ 1, 0, 0, 1, 0, 1, 1, 1, 0, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+	} };
+
+	Node start(0, 0);
+	Node goal(9, 9);
+
+	cout << "Map" << endl;
+	aStar.DisplayMap(map, start, goal);
+	aStar.Search(map, start, goal);
+	cout << endl << endl;
 }
