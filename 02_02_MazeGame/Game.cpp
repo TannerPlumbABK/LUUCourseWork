@@ -104,10 +104,10 @@ bool Game::ProcessInput()
 
 	// if position didn't change
 	if (newPlayerX == m_player.GetPositionX() && newPlayerY == m_player.GetPositionY()) return false;
-	else return HandleCollision(newPlayerX, newPlayerY);
+	else return CheckCollision(newPlayerX, newPlayerY);
 }
 
-bool Game::HandleCollision(int newPlayerX, int newPlayerY)
+bool Game::CheckCollision(int newPlayerX, int newPlayerY)
 {
 	bool isGameDone = false;
 	PlacableActor* collidedActor = m_level.UpdateActors(newPlayerX, newPlayerY);
