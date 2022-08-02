@@ -15,6 +15,7 @@
 #include "PortalEntrance.h"
 #include "PortalExit.h"
 #include "Life.h"
+#include "Wall.h"
 
 using namespace std;
 
@@ -126,11 +127,6 @@ bool Level::IsSpace(int x, int y)
 	return (m_pLevelData[GetIndexFromCoords(x, y)] == ' ');
 }
 
-bool Level::IsWall(int x, int y)
-{
-	return (m_pLevelData[GetIndexFromCoords(x, y)] == WALL);
-}
-
 bool Level::Convert(int* playerX, int* playerY)
 {
 	bool anyWarnings = false;
@@ -146,7 +142,8 @@ bool Level::Convert(int* playerX, int* playerY)
 			case '+':
 			case '-':
 			case '|':
-				m_pLevelData[index] = WALL;
+				m_pLevelData[index] = ' ';
+				m_pActors.push_back(new Wall(x, y));
 				break;
 			case 'r':
 				m_pLevelData[index] = ' ';

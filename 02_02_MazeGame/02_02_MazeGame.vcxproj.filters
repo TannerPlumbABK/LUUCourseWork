@@ -72,6 +72,9 @@
     <ClCompile Include="PortalExit.cpp">
       <Filter>Source Files\Actors</Filter>
     </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files\Actors</Filter>
     </ClInclude>
     <ClInclude Include="PortalEntrance.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
       <Filter>Header Files\Actors</Filter>
     </ClInclude>
   </ItemGroup>

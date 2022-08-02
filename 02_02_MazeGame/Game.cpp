@@ -141,7 +141,6 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 		}
 	}
 	else if (m_level.IsSpace(newPlayerX, newPlayerY)) m_player.SetPosition(newPlayerX, newPlayerY);
-	else if (m_level.IsWall(newPlayerX, newPlayerY)) { /* do nothing */ }
 
 	return isGameDone;
 }

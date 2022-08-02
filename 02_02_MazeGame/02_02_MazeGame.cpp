@@ -118,7 +118,8 @@ void AskPlayAgain()
 	cout << endl << "Would you like to play again?" << endl;
 	cout << "1 - Yes" << endl;
 	cout << "2 - No" << endl;
-	cout << "Choice: ";
+	for (int i = 0; i < 25; i++) cout << line;
+	cout << "\nChoice: ";
 
 	int input;
 	while (true)

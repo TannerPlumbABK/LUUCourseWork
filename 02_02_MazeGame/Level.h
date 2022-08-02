@@ -25,7 +25,6 @@ public:
 	PlacableActor* UpdateActors(int x, int y);
 
 	bool IsSpace(int x, int y);
-	bool IsWall(int x, int y);
 
 	int GetHeight();
 	int GetWidth();

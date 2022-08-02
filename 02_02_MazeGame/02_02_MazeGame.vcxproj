@@ -154,6 +154,7 @@
     <ClCompile Include="PortalEntrance.cpp" />
     <ClCompile Include="PortalExit.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="PortalEntrance.h" />
     <ClInclude Include="PortalExit.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
