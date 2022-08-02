@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "Level.h"
+#include "Shop.h"
 
 constexpr int maxLevel = 3;
 constexpr int levelCompleteMoneyReward = 25;
@@ -13,6 +14,7 @@ class Game
 private:
 	Player m_player;
 	Level m_level;
+	Shop m_shop;
 	bool m_isGameOver;
 	bool m_userQuit;
 	int m_currentLevelNum;
@@ -34,7 +36,6 @@ public:
 
 	int GetPlayerLives();
 
-	void DisplayDirections();
-	void LoadShop();
+	void DisplayHUD();
 };
 

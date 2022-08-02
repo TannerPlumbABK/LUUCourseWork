@@ -43,6 +43,8 @@ bool Game::Load(int levelNum)
 	levelName.append(to_string(levelNum));
 	levelName.append(".txt");
 
+	m_level.ClearActors();
+	m_currentLevelNum = levelNum;
 	return m_level.Load(levelName, m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
 }
 
@@ -89,10 +91,7 @@ bool Game::ProcessInput()
 	else if ((char)input == 'r' || (char)input == 'R')
 	{
 		m_player.DecrementLives();
-
 		if (m_player.GetLives() <= 0) return true;
-
-		m_level.ClearActors();
 		Load(m_currentLevelNum);
 		return false;
 	}
@@ -106,11 +105,6 @@ bool Game::ProcessInput()
 	// if position didn't change
 	if (newPlayerX == m_player.GetPositionX() && newPlayerY == m_player.GetPositionY()) return false;
 	else return HandleCollision(newPlayerX, newPlayerY);
-}
-
-void CollideWithActor(PlacableActor* actor)
-{
-	//
 }
 
 bool Game::HandleCollision(int newPlayerX, int newPlayerY)
@@ -128,21 +122,8 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 
 		if (collidedActor->GetType() == ActorType::Goal)
 		{
-			m_currentLevelNum += 1;
-
-			srand((unsigned int)time(nullptr));
-			int i = (rand() % 100) + 1;
-			if (i <= m_shopOdds)
-			{
-				// load shop
-				LoadShop();
-
-				m_shopOdds = 0;
-			}
-			else m_shopOdds += increasingOddsPerLevel;
-
-			m_level.ClearActors();
-			Load(m_currentLevelNum);
+			m_shop.LookForShop(&m_player);
+			Load(m_currentLevelNum + 1);
 		}
 		else if (collidedActor->GetType() == ActorType::PortalEntrance)
 		{
@@ -183,102 +164,18 @@ void Game::Draw()
 	currentCursorPosition.Y = m_level.GetHeight();
 	SetConsoleCursorPosition(console, currentCursorPosition);
 
-	// display some extra info
-	cout << endl;
-	cout << "            Level " << m_currentLevelNum << endl << endl;
-	DisplayDirections();
-	m_player.DisplayPlayerInfo();
+	DisplayHUD();
 }
 
-void Game::DisplayDirections()
+void Game::DisplayHUD()
 {
+	cout << endl;
+	cout << "            Level " << m_currentLevelNum << endl << endl;
 	for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
 	cout << (char)219 << " WASD or Arrow Keys to move " << (char)219 << endl;
 	cout << (char)219 << " Z to drop a key            " << (char)219 << endl;
 	cout << (char)219 << " R to restart level         " << (char)219 << endl;
 	for (int i = 0; i < 30; i++) cout << (char)219; cout << endl;
 	cout << endl;
-}
-
-void Game::LoadShop()
-{
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	bool doneShopping = false;
-
-	while (!doneShopping)
-	{
-		system("cls");
-
-		cout << endl << "You found a wandering merchant!" << endl << endl;
-		cout << "What would you like to buy?" << endl;
-
-		if (m_player.GetMoney() >= 50) SetConsoleTextAttribute(console, (int)ActorColor::Green);
-		else SetConsoleTextAttribute(console, (int)ActorColor::Red);
-		cout << "1. +1 life - 50 coins" << endl;
-
-		if (m_player.GetMoney() >= 100) SetConsoleTextAttribute(console, (int)ActorColor::Green);
-		else SetConsoleTextAttribute(console, (int)ActorColor::Red);
-		cout << "2. +3 lives - 100 coins" << endl;
-
-		if (m_player.GetMoney() >= 150) SetConsoleTextAttribute(console, (int)ActorColor::Green);
-		else SetConsoleTextAttribute(console, (int)ActorColor::Red);
-		cout << "3. +5 lives - 150 coins" << endl;
-
-		SetConsoleTextAttribute(console, (int)ActorColor::Regular);
-		cout << "4. Leave Shop" << endl;
-
-		cout << endl;
-		cout << "You have " << m_player.GetMoney() << (m_player.GetMoney() > 1 ? " coins." : " coin.") << endl;
-		cout << "You have " << m_player.GetLives() << (m_player.GetLives() > 1 ? " lives." : " life.") << endl;
-
-		cout << endl << "Choice: ";
-
-		int choice;
-		while (true) if (cin >> choice) break;
-
-		cout << endl;
-
-		switch (choice)
-		{
-		case 1:
-			if (m_player.GetMoney() >= 50)
-			{
-				m_player.AddLives(1);
-				m_player.SpendMoney(50);
-				cout << "Your purchased 1 life for 50 coins!" << endl;
-			}
-			else cout << "You don't have enough money for that." << endl; 
-			break;
-		case 2:
-			if (m_player.GetMoney() >= 100)
-			{
-				m_player.AddLives(3);
-				m_player.SpendMoney(100);
-				cout << "Your purchased 3 lives for 100 coins!" << endl;
-			}
-			else cout << "You don't have enough money for that." << endl; 
-			break;
-		case 3:
-			if (m_player.GetMoney() >= 150)
-			{
-				m_player.AddLives(5);
-				m_player.SpendMoney(150);
-				cout << "Your purchased 5 lives for 150 coins!" << endl;
-			}
-			else cout << "You don't have enough money for that." << endl;
-			break;
-		case 4:
-		default:
-			doneShopping = true;
-			break;
-		}
-
-		cout << endl;
-
-		if (!doneShopping) system("pause");
-
-	}
-
-	cout << "Thanks for visiting the shop!" << endl << endl;
-	system("pause");
+	m_player.DisplayPlayerInfo();
 }
