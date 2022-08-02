@@ -15,4 +15,5 @@ public:
 	virtual ActorType GetType() override;
 	bool IsOpen();
 	void Open();
+	virtual void HandleCollision(PlacableActor& player) override;
 };

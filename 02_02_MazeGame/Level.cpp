@@ -114,6 +114,7 @@ PlacableActor* Level::UpdateActors(int x, int y)
 	for (auto actor = m_pActors.begin(); actor != m_pActors.end(); ++actor)
 	{
 		(*actor)->Update();
+		if (!(*actor)->IsActive()) continue;
 		if (x == (*actor)->GetPositionX() && y == (*actor)->GetPositionY()) collidedActor = (*actor); 
 	}
 

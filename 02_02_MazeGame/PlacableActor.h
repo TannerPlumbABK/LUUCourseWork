@@ -53,4 +53,5 @@ public:
 	virtual ActorType GetType() = 0;
 	virtual void Draw() = 0;
 	virtual void Update() { }
+	virtual void HandleCollision(PlacableActor& player) { }
 };

@@ -12,4 +12,5 @@ public:
 	virtual ActorType GetType() override;
 	int GetWorth() const;
 	virtual void Draw() override;
+	virtual void HandleCollision(PlacableActor& player) override;
 };

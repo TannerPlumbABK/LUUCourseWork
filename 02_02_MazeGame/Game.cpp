@@ -70,6 +70,11 @@ int Game::GetPlayerLives()
 
 bool Game::Update()
 {
+	return ProcessInput();
+}
+
+bool Game::ProcessInput()
+{
 	char input = _getch();
 
 	int newPlayerX = m_player.GetPositionX();
@@ -103,100 +108,43 @@ bool Game::Update()
 	else return HandleCollision(newPlayerX, newPlayerY);
 }
 
+void CollideWithActor(PlacableActor* actor)
+{
+	//
+}
+
 bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 {
 	bool isGameDone = false;
 	PlacableActor* collidedActor = m_level.UpdateActors(newPlayerX, newPlayerY);
 
-	if (collidedActor != nullptr && collidedActor->IsActive())
+	if (collidedActor != nullptr)
 	{
-		switch (collidedActor->GetType())
-		{
-		case ActorType::Enemy:
-		{
-			Enemy* collidedEnemy = dynamic_cast<Enemy*>(collidedActor);
-			assert(collidedEnemy);
-			AudioManager::GetInstance()->PlayLoseLivesSound();
-			collidedEnemy->Remove();
-			m_player.SetPosition(newPlayerX, newPlayerY);
-			m_player.DecrementLives();
+		collidedActor->HandleCollision(m_player);
 
-			if (m_player.GetLives() <= 0) isGameDone = true;
-			break;
-		}
-		case ActorType::Money:
+		if (m_player.GetLives() <= 0
+			|| m_currentLevelNum >= maxLevel) 
+				isGameDone = true;
+
+		if (collidedActor->GetType() == ActorType::Goal)
 		{
-			Money* collidedMoney = dynamic_cast<Money*>(collidedActor);
-			assert(collidedMoney);
-			AudioManager::GetInstance()->PlayMoneySound();
-			collidedMoney->Remove();
-			m_player.AddMoney(collidedMoney->GetWorth());
-			m_player.SetPosition(newPlayerX, newPlayerY);
-			break;
-		}
-		case ActorType::Key:
-		{
-			Key* collidedKey = dynamic_cast<Key*>(collidedActor);
-			assert(collidedKey);
-			if (!m_player.HasKey())
+			m_currentLevelNum += 1;
+
+			srand((unsigned int)time(nullptr));
+			int i = (rand() % 100) + 1;
+			if (i <= m_shopOdds)
 			{
-				m_player.PickupKey(collidedKey);
-				collidedKey->Remove();
-				m_player.SetPosition(newPlayerX, newPlayerY);
-				AudioManager::GetInstance()->PlayKeyPickupSound();
+				// load shop
+				LoadShop();
+
+				m_shopOdds = 0;
 			}
-			break;
+			else m_shopOdds += increasingOddsPerLevel;
+
+			m_level.ClearActors();
+			Load(m_currentLevelNum);
 		}
-		case ActorType::Door:
-		{
-			Door* collidedDoor = dynamic_cast<Door*>(collidedActor);
-			assert(collidedDoor);
-			if (!collidedDoor->IsOpen())
-			{
-				if (m_player.HasKey(collidedDoor->GetColor()))
-				{
-					collidedDoor->Open();
-					collidedDoor->Remove();
-					m_player.UseKey();
-					m_player.SetPosition(newPlayerX, newPlayerY);
-					AudioManager::GetInstance()->PlayDoorOpenSound();
-				}
-				else AudioManager::GetInstance()->PlayDoorClosedSound();
-			}
-			else m_player.SetPosition(newPlayerX, newPlayerY);
-			break;
-		}
-		case ActorType::Goal:
-		{
-			Goal* collidedGoal = dynamic_cast<Goal*>(collidedActor);
-			assert(collidedGoal);
-			collidedGoal->Remove();
-			m_player.SetPosition(newPlayerX, newPlayerY);
-
-			if (m_currentLevelNum >= maxLevel) isGameDone = true;
-			else
-			{
-				m_currentLevelNum += 1;
-				m_player.AddMoney(levelCompleteMoneyReward);
-
-				srand((unsigned int)time(nullptr));
-				int i = (rand() % 100) + 1;
-				if (i <= m_shopOdds)
-				{
-					// load shop
-					LoadShop();
-
-					m_shopOdds = 0;
-				}
-				else m_shopOdds += increasingOddsPerLevel;
-
-				m_level.ClearActors();
-				Load(m_currentLevelNum);
-			}
-			
-			break;
-		}
-		case ActorType::PortalEntrance:
+		else if (collidedActor->GetType() == ActorType::PortalEntrance)
 		{
 			PortalEntrance* collidedPortal = dynamic_cast<PortalEntrance*>(collidedActor);
 			assert(collidedPortal);
@@ -209,20 +157,6 @@ bool Game::HandleCollision(int newPlayerX, int newPlayerY)
 					break;
 				}
 			}
-			break;
-		}
-		case ActorType::Life:
-		{
-			Life* collidedLife = dynamic_cast<Life*>(collidedActor);
-			assert(collidedLife);
-			collidedLife->Remove();
-			m_player.SetPosition(newPlayerX, newPlayerY);
-			m_player.AddLives(1);
-			AudioManager::GetInstance()->PlayLifePickupSound();
-			break;
-		}
-		default:
-			break;
 		}
 	}
 	else if (m_level.IsSpace(newPlayerX, newPlayerY)) m_player.SetPosition(newPlayerX, newPlayerY);

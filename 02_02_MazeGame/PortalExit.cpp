@@ -17,3 +17,8 @@ void PortalExit::Draw()
 {
 	std::cout << (char)176;
 }
+
+void PortalExit::HandleCollision(PlacableActor& player)
+{
+	player.SetPosition(GetPositionX(), GetPositionY());
+}

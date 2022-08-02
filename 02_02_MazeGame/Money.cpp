@@ -2,6 +2,8 @@
 #include <Windows.h>
 
 #include "Money.h"
+#include "AudioManager.h"
+#include "Player.h"
 
 Money::Money(int x, int y, int worth, ActorColor color)
 	: PlacableActor(x, y, color)
@@ -26,4 +28,12 @@ void Money::Draw()
 	SetConsoleTextAttribute(console, (int)m_color);
 	std::cout << "$";
 	SetConsoleTextAttribute(console, (int)ActorColor::Regular);
+}
+
+void Money::HandleCollision(PlacableActor& player)
+{
+	AudioManager::GetInstance()->PlayMoneySound();
+	Remove();
+	player.SetPosition(GetPositionX(), GetPositionY());
+	dynamic_cast<Player*>(&player)->AddMoney(GetWorth());
 }

@@ -21,6 +21,7 @@ private:
 	bool Update();
 	void Draw();
 	bool HandleCollision(int newPlayerX, int newPlayerY);
+	bool ProcessInput();
 
 public:
 	Game();

@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "Enemy.h"
+#include "AudioManager.h"
+#include "Player.h"
 
 Enemy::Enemy(int x, int y, int deltaX, int deltaY)
 	: PlacableActor(x, y)
@@ -41,4 +43,12 @@ void Enemy::UpdateDirection(int& current, int& direction, int& movement)
 		current = movement * direction;
 		direction *= -1;
 	}
+}
+
+void Enemy::HandleCollision(PlacableActor& player)
+{
+	AudioManager::GetInstance()->PlayLoseLivesSound();
+	Remove();
+	player.SetPosition(GetPositionX(), GetPositionY());
+	dynamic_cast<Player*>(&player)->DecrementLives();
 }

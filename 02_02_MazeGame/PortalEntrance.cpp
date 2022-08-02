@@ -2,6 +2,7 @@
 #include <Windows.h>
 
 #include "PortalEntrance.h"
+#include "Player.h"
 
 PortalEntrance::PortalEntrance(int x, int y, ActorColor color)
 	: PlacableActor(x, y, color) 
