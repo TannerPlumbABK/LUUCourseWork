@@ -35,6 +35,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice_Algorithms", "Prac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03_03_Multithreading", "03_03_Multithreading\03_03_Multithreading.vcxproj", "{AC8AAF78-ED83-4A7B-9148-29BE71436267}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Challenge_Beehives", "Challenge_Beehives\Challenge_Beehives.vcxproj", "{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,6 +173,14 @@ Global
 		{AC8AAF78-ED83-4A7B-9148-29BE71436267}.Release|x64.Build.0 = Release|x64
 		{AC8AAF78-ED83-4A7B-9148-29BE71436267}.Release|x86.ActiveCfg = Release|Win32
 		{AC8AAF78-ED83-4A7B-9148-29BE71436267}.Release|x86.Build.0 = Release|Win32
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Debug|x64.ActiveCfg = Debug|x64
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Debug|x64.Build.0 = Debug|x64
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Debug|x86.ActiveCfg = Debug|Win32
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Debug|x86.Build.0 = Debug|Win32
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Release|x64.ActiveCfg = Release|x64
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Release|x64.Build.0 = Release|x64
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Release|x86.ActiveCfg = Release|Win32
+		{2C591C11-9A8E-41BE-8084-A48D9FCBCEF1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
