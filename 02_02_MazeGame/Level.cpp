@@ -16,6 +16,7 @@
 #include "PortalExit.h"
 #include "Life.h"
 #include "Wall.h"
+#include "Player.h"
 
 using namespace std;
 

@@ -265,6 +265,25 @@ void Game::RedrawEnemies()
 	}
 }
 
+void Game::RedrawMoney()
+{
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	for (int i = 0; i < (int)m_level.GetActors().size(); i++)
+	{
+		PlacableActor* actor = m_level.GetActors()[i];
+		if (actor->GetType() == ActorType::Money && actor->IsActive())
+		{
+			COORD moneyPos = { (SHORT)actor->GetPositionX(), (SHORT)actor->GetPositionY() };
+			SetConsoleCursorPosition(console, moneyPos);
+			actor->Draw();
+
+			COORD end = { (SHORT)m_level.GetWidth(), (SHORT)m_level.GetHeight() };
+			SetConsoleCursorPosition(console, end);
+		}
+	}
+}
+
 void Game::DrawThread()
 {
 	while (runThread)
@@ -275,6 +294,7 @@ void Game::DrawThread()
 			this_thread::sleep_for(chrono::milliseconds(5));
 			if (!skipThread) RedrawPlayer();
 			if (!skipThread) RedrawEnemies();
+			if (!skipThread) RedrawMoney();
 			isThreadRunning = false;
 		}
 	}

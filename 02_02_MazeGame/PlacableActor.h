@@ -54,6 +54,7 @@ public:
 
 	void Remove();
 	bool IsActive();
+	void MakeActive();
 	void Place(int x, int y);
 
 	virtual ActorType GetType() = 0;

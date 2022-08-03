@@ -1,11 +1,14 @@
 #pragma once
 
+#include <thread>
+
 #include "PlacableActor.h"
 
 class Money : public PlacableActor
 {
 private:
 	int m_worth;
+	int m_respawnTimer;
 
 public:
 	Money(int x, int y, int worth, ActorColor color = ActorColor::Yellow);
@@ -13,4 +16,5 @@ public:
 	int GetWorth() const;
 	virtual void Draw() override;
 	virtual void HandleCollision(PlacableActor& player) override;
+	void RespawnTimer();
 };

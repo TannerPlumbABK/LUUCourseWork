@@ -69,6 +69,11 @@ bool PlacableActor::IsActive()
 	return m_isActive; 
 }
 
+void PlacableActor::MakeActive()
+{
+	m_isActive = true;
+}
+
 void PlacableActor::Place(int x, int y)
 {
 	m_pPosition->x = x;

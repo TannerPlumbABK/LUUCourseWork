@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Windows.h>
+#include <chrono>
 
 #include "Money.h"
 #include "AudioManager.h"
@@ -8,6 +9,7 @@
 Money::Money(int x, int y, int worth, ActorColor color)
 	: PlacableActor(x, y, color)
 	, m_worth(worth)
+	, m_respawnTimer(5)
 {
 	//
 }
@@ -36,4 +38,15 @@ void Money::HandleCollision(PlacableActor& player)
 	Remove();
 	player.SetPosition(GetPositionX(), GetPositionY());
 	dynamic_cast<Player*>(&player)->AddMoney(GetWorth());
+
+	// create thread to respawn
+	std::thread RespawnThread(&Money::RespawnTimer, this);
+	RespawnThread.detach();
+}
+
+void Money::RespawnTimer()
+{
+	//
+	std::this_thread::sleep_for(std::chrono::milliseconds(m_respawnTimer * 1000));
+	MakeActive();
 }
