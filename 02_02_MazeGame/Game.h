@@ -1,10 +1,11 @@
 #pragma once
+#include <thread>
 
 #include "Player.h"
 #include "Level.h"
 #include "Shop.h"
 
-constexpr int maxLevel = 3;
+constexpr int maxLevel = 2;
 constexpr int levelCompleteMoneyReward = 25;
 constexpr int startingShopOdds = 0;
 constexpr int increasingOddsPerLevel = 100;
@@ -20,10 +21,20 @@ private:
 	int m_currentLevelNum;
 	int m_shopOdds;
 
+	int m_initialDraw;
+
+	bool runThread;
+	bool isThreadRunning;
+	bool skipThread;
+	std::thread* drawThread;
+
 	bool Update();
 	void Draw();
+	void RedrawPlayer();
+	void RedrawEnemies();
 	bool CheckCollision(int newPlayerX, int newPlayerY);
 	bool ProcessInput();
+	void DrawThread();
 
 public:
 	Game();
@@ -38,4 +49,3 @@ public:
 
 	void DisplayHUD();
 };
-

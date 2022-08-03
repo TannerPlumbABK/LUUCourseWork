@@ -33,6 +33,7 @@ class PlacableActor
 {
 protected:
 	Point* m_pPosition;
+	Point* m_pPrevPosition;
 	bool m_isActive;
 	ActorColor m_color;
 public:
@@ -43,6 +44,10 @@ public:
 	int GetPositionY();
 	int* GetPositionXPointer();
 	int* GetPositionYPointer();
+
+	int GetLastPositionX();
+	int GetLastPositionY();
+
 	void SetPosition(int x, int y);
 
 	ActorColor GetColor();

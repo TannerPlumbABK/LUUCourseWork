@@ -33,6 +33,11 @@ Game::Game()
 	, m_userQuit(false)
 	, m_currentLevelNum(1)
 	, m_shopOdds(startingShopOdds)
+	, runThread(false)
+	, drawThread(nullptr)
+	, m_initialDraw(false)
+	, isThreadRunning(false)
+	, skipThread(false)
 {
 	//
 }
@@ -45,33 +50,51 @@ bool Game::Load(int levelNum)
 
 	m_level.ClearActors();
 	m_currentLevelNum = levelNum;
+
+	runThread = true;
+	drawThread = new thread([this]() { DrawThread(); });
+
 	return m_level.Load(levelName, m_player.GetPositionXPointer(), m_player.GetPositionYPointer());
 }
 
-void Game::Run() 
+void Game::Run()
 {
-	Draw();
+	if (!m_initialDraw)
+	{
+		m_initialDraw = true;
+		Draw();
+	}
+	//Draw();
 	m_isGameOver = Update();
-	if (m_isGameOver) Draw();
+	//if (m_isGameOver) Draw();
 }
 
 bool Game::IsGameOver()
-{ 
-	return m_isGameOver; 
+{
+	return m_isGameOver;
 }
 
 bool Game::DidUserQuit()
-{ 
-	return m_userQuit; 
+{
+	return m_userQuit;
 }
 
 int Game::GetPlayerLives()
-{ 
+{
 	return m_player.GetLives();
 }
 
 bool Game::Update()
 {
+	if (m_currentLevelNum > maxLevel)
+	{
+		runThread = false;
+		skipThread = true;
+		drawThread->join();
+		drawThread = nullptr;
+		delete drawThread;
+		return true;
+	}
 	return ProcessInput();
 }
 
@@ -91,8 +114,20 @@ bool Game::ProcessInput()
 	else if ((char)input == 'r' || (char)input == 'R')
 	{
 		m_player.DecrementLives();
-		if (m_player.GetLives() <= 0) return true;
+
+		runThread = false;
+
+		if (m_player.GetLives() <= 0)
+		{
+			drawThread->join();
+			drawThread = nullptr;
+			delete drawThread;
+			return true;
+		}
 		Load(m_currentLevelNum);
+		Draw();
+		runThread = true;
+
 		return false;
 	}
 	else if (input == escapeKey)
@@ -115,13 +150,23 @@ bool Game::CheckCollision(int newPlayerX, int newPlayerY)
 	if (collidedActor != nullptr)
 	{
 		collidedActor->HandleCollision(m_player);
-
+		
 		if (m_player.GetLives() <= 0
-			|| m_currentLevelNum >= maxLevel) 
-				isGameDone = true;
+			|| m_currentLevelNum > maxLevel)
+		{
+			runThread = false;
+			drawThread->join();
+			isGameDone = true;
+			drawThread = nullptr;
+			delete drawThread;
+		}
 
 		if (collidedActor->GetType() == ActorType::Goal)
 		{
+			runThread = false;
+			drawThread->join();
+			drawThread = nullptr;
+			m_initialDraw = false;
 			m_shop.LookForShop(&m_player);
 			Load(m_currentLevelNum + 1);
 		}
@@ -139,14 +184,18 @@ bool Game::CheckCollision(int newPlayerX, int newPlayerY)
 				}
 			}
 		}
+
+		if (collidedActor->GetType() != ActorType::Wall) Draw();
 	}
 	else if (m_level.IsSpace(newPlayerX, newPlayerY)) m_player.SetPosition(newPlayerX, newPlayerY);
-
+	
 	return isGameDone;
 }
 
 void Game::Draw()
 {
+	skipThread = true;
+
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	system("cls");
 
@@ -164,6 +213,71 @@ void Game::Draw()
 	SetConsoleCursorPosition(console, currentCursorPosition);
 
 	DisplayHUD();
+
+	skipThread = false;
+}
+
+void Game::RedrawPlayer()
+{
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	if (m_player.GetLastPositionX() != m_player.GetPositionX()
+		|| m_player.GetLastPositionY() != m_player.GetPositionY())
+	{
+		COORD oldPlayerCoord = { (SHORT)m_player.GetLastPositionX(), (SHORT)m_player.GetLastPositionY() };
+		SetConsoleCursorPosition(console, oldPlayerCoord);
+		cout << " ";
+
+		COORD newPlayerCoord = { (SHORT)m_player.GetPositionX(), (SHORT)m_player.GetPositionY() };
+		SetConsoleCursorPosition(console, newPlayerCoord);
+		m_player.Draw();
+
+		COORD end = { (SHORT)m_level.GetWidth(), (SHORT)m_level.GetHeight() };
+		SetConsoleCursorPosition(console, end);
+	}
+}
+
+void Game::RedrawEnemies()
+{
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cursorInfo;
+	cursorInfo.bVisible = false;
+	cursorInfo.dwSize = 1;
+	SetConsoleCursorInfo(console, &cursorInfo);
+
+	for (int i = 0; i < (int)m_level.GetActors().size(); i++)
+	{
+		PlacableActor* actor = m_level.GetActors()[i];
+		if (actor->GetType() == ActorType::Enemy && actor->IsActive())
+		{
+			if (actor->GetLastPositionX() != actor->GetPositionX()
+				|| actor->GetLastPositionY() != actor->GetPositionY())
+			{
+				COORD oldPos = { (SHORT)actor->GetLastPositionX(), (SHORT)actor->GetLastPositionY() };
+				SetConsoleCursorPosition(console, oldPos);
+				cout << " ";
+
+				COORD newPos = { (SHORT)actor->GetPositionX(), (SHORT)actor->GetPositionY() };
+				SetConsoleCursorPosition(console, newPos);
+				actor->Draw();
+			}
+		}
+	}
+}
+
+void Game::DrawThread()
+{
+	while (runThread)
+	{
+		if (!isThreadRunning)
+		{
+			isThreadRunning = true;
+			this_thread::sleep_for(chrono::milliseconds(5));
+			if (!skipThread) RedrawPlayer();
+			if (!skipThread) RedrawEnemies();
+			isThreadRunning = false;
+		}
+	}
 }
 
 void Game::DisplayHUD()

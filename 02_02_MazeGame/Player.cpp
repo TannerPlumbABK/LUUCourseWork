@@ -90,7 +90,7 @@ void Player::Draw()
 void Player::DisplayPlayerInfo()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	string key = "None";
+	string key = "None ";
 
 	cout << (char)219 << " ";
 	SetConsoleTextAttribute(console, (int)ActorColor::Red);

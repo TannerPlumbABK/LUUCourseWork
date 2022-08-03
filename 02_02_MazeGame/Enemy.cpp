@@ -50,5 +50,5 @@ void Enemy::HandleCollision(PlacableActor& player)
 	AudioManager::GetInstance()->PlayLoseLivesSound();
 	Remove();
 	player.SetPosition(GetPositionX(), GetPositionY());
-	dynamic_cast<Player*>(&player)->DecrementLives();
+	dynamic_cast<Player*>(&player)->DecrementLives(1);
 }

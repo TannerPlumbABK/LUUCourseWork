@@ -1,22 +1,26 @@
 #pragma once
 
 #include <vector>
+#include <thread>
 
 class PlacableActor;
 
 class Level
 {
 private:
-	char* m_pLevelData;
 	int m_width;
 	int m_height;
 
 	std::vector<PlacableActor*> m_pActors;
 
+	bool runThread;
+	std::thread* enemyThread;
+
 	bool Convert(int* playerX, int* playerY);
-	int GetIndexFromCoords(int x, int y);
 
 public:
+	char* m_pLevelData;
+
 	Level();
 	~Level();
 
@@ -26,8 +30,11 @@ public:
 
 	bool IsSpace(int x, int y);
 
+	void StartEnemyMovement();
+
 	int GetHeight();
 	int GetWidth();
 	std::vector<PlacableActor*> GetActors();
 	void ClearActors();
+	int GetIndexFromCoords(int x, int y);
 };

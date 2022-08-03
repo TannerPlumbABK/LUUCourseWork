@@ -28,6 +28,7 @@ int main()
 	{
 	case 1:
 		// PLAY
+		system("cls");
 		LoadGame(myGame);
 		break;
 	case 2:
@@ -96,6 +97,7 @@ void LoadGame(Game& myGame)
 	{
 		while (!myGame.IsGameOver()) myGame.Run();
 
+		system("cls");
 		if (myGame.DidUserQuit()) cout << "Thanks for playing!" << endl;
 		else if (myGame.GetPlayerLives() <= 0)
 		{

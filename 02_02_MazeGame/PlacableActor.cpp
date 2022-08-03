@@ -2,6 +2,7 @@
 
 PlacableActor::PlacableActor(int x, int y, ActorColor color)
 	: m_pPosition(new Point(x, y))
+	, m_pPrevPosition(new Point(x, y))
 	, m_isActive(true)
 	, m_color(color)
 {
@@ -34,8 +35,21 @@ int* PlacableActor::GetPositionYPointer()
 	return &(m_pPosition->y);
 }
 
+int PlacableActor::GetLastPositionX()
+{
+	return m_pPrevPosition->x;
+}
+
+int PlacableActor::GetLastPositionY()
+{
+	return m_pPrevPosition->y;
+}
+
 void PlacableActor::SetPosition(int x, int y)
 {
+	m_pPrevPosition->x = m_pPosition->x;
+	m_pPrevPosition->y = m_pPosition->y;
+
 	m_pPosition->x = x;
 	m_pPosition->y = y;
 }

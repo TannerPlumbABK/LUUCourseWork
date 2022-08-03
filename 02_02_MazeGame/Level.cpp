@@ -24,8 +24,10 @@ constexpr char WALL = (char)219;
 Level::Level() 
 	: m_pLevelData(nullptr)
 	, m_width(0)
-	, m_height(0) 
-{ 
+	, m_height(0)
+	, runThread(false)
+	, enemyThread(nullptr)
+{
 	//
 }
 
@@ -41,6 +43,14 @@ Level::~Level()
 	{
 		delete m_pActors.back();
 		m_pActors.pop_back();
+	}
+
+	if (enemyThread != nullptr)
+	{
+		runThread = false;
+		enemyThread->join();
+		enemyThread = nullptr;
+		delete enemyThread;
 	}
 }
 
@@ -74,6 +84,9 @@ bool Level::Load(string levelName, int* playerX, int* playerY)
 		cout << "There are some warnings in the level data, see above." << endl;
 		system("pause");
 	}
+
+	enemyThread = new thread([this]() { StartEnemyMovement(); });
+	runThread = true;
 
 	return true;
 }
@@ -114,12 +127,25 @@ PlacableActor* Level::UpdateActors(int x, int y)
 
 	for (auto actor = m_pActors.begin(); actor != m_pActors.end(); ++actor)
 	{
-		(*actor)->Update();
+		if ((*actor)->GetType() != ActorType::Enemy) (*actor)->Update(); 
 		if (!(*actor)->IsActive()) continue;
 		if (x == (*actor)->GetPositionX() && y == (*actor)->GetPositionY()) collidedActor = (*actor); 
 	}
 
 	return collidedActor;
+}
+
+void Level::StartEnemyMovement()
+{
+	while (runThread)
+	{
+		this_thread::sleep_for(chrono::milliseconds(500));
+		for (auto actor = m_pActors.begin(); actor != m_pActors.end(); ++actor)
+		{
+			if ((*actor)->GetType() != ActorType::Enemy) continue;
+			(*actor)->Update();
+		}
+	}
 }
 
 bool Level::IsSpace(int x, int y)
@@ -244,5 +270,12 @@ vector<PlacableActor*> Level::GetActors()
 
 void Level::ClearActors()
 {
+	if (enemyThread != nullptr)
+	{
+		runThread = false;
+		enemyThread->join();
+		enemyThread = nullptr;
+		delete enemyThread;
+	}
 	m_pActors.clear();
 }
