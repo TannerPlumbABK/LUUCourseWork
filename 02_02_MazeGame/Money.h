@@ -8,7 +8,6 @@ class Money : public PlacableActor
 {
 private:
 	int m_worth;
-	int m_respawnTimer;
 
 public:
 	Money(int x, int y, int worth, ActorColor color = ActorColor::Yellow);

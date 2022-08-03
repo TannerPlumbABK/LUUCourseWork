@@ -8,7 +8,7 @@
 Life::Life(int x, int y, ActorColor color)
 	: PlacableActor(x, y, color)
 {
-	//
+	m_respawnTimer = 25;
 }
 
 ActorType Life::GetType()

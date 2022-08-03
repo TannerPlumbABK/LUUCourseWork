@@ -36,6 +36,7 @@ protected:
 	Point* m_pPrevPosition;
 	bool m_isActive;
 	ActorColor m_color;
+	int m_respawnTimer;
 public:
 	PlacableActor(int x, int y, ActorColor color = ActorColor::Regular);
 	virtual ~PlacableActor();
@@ -49,6 +50,9 @@ public:
 	int GetLastPositionY();
 
 	void SetPosition(int x, int y);
+	
+	void SetRespawn();
+	void RespawnTimer();
 
 	ActorColor GetColor();
 

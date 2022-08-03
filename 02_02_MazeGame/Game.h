@@ -32,7 +32,7 @@ private:
 	void Draw();
 	void RedrawPlayer();
 	void RedrawEnemies();
-	void RedrawMoney();
+	void RedrawActors();
 	bool CheckCollision(int newPlayerX, int newPlayerY);
 	bool ProcessInput();
 	void DrawThread();

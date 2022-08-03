@@ -15,6 +15,8 @@ Enemy::Enemy(int x, int y, int deltaX, int deltaY)
 {
 	if (m_movementInX != 0) m_directionX = 1; 
 	if (m_movementInY != 0) m_directionY = 1; 
+
+	m_respawnTimer = 10;
 }
 
 ActorType Enemy::GetType()
