@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="04_01_Networking.cpp">
+    <ClCompile Include="04_01_NetworkingServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
