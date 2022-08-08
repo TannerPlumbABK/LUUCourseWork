@@ -104,6 +104,6 @@ void DisplayInfo()
 		cout << "                     Honey Gathered: " << containersOfHoney << endl;
 		cout << "           Container contains honey: " << (honeyInContainer ? "Yes" : "No") << endl;
 		cout << "   Num Bees currently holding honey: " << beesWithHoney << endl;
-		cout << " Num Bees currently gathering honey: " << (4 - beesWithHoney) << endl;
+		cout << " Num Bees currently producing honey: " << (4 - beesWithHoney) << endl;
 	}
 }
