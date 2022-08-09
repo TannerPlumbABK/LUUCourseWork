@@ -13,7 +13,7 @@ ENetEvent event;
 constexpr auto WELCOME_MESSAGE = "You're now connected to chat!\nType \"/quit\" to exit.\n";
 
 bool CreateServer();
-void SendPacket(string message);
+void SendPacket(string message, bool broadcast);
 
 int main(int argc, char** argv)
 {
@@ -45,13 +45,13 @@ int main(int argc, char** argv)
                 /* Store any relevant client information here. */
                 event.peer->data = (void*)("Client information");
 
-                SendPacket(WELCOME_MESSAGE);
+                SendPacket(WELCOME_MESSAGE, true);
                 break;
             }
             case ENET_EVENT_TYPE_RECEIVE:
             {
                 cout << "A packet of length " << event.packet->dataLength << " containing " << (char*)event.packet->data << endl;
-                SendPacket((char*)event.packet->data);
+                SendPacket((char*)event.packet->data, false);
 
                 /* Clean up the packet now that we're done using it. */
                 enet_packet_destroy(event.packet);
@@ -91,10 +91,15 @@ bool CreateServer()
     return server != nullptr;
 }
 
-void SendPacket(string message)
+void SendPacket(string message, bool broadcast)
 {
     const char* msg = message.c_str();
     ENetPacket* packet = enet_packet_create(msg, strlen(msg) + 1, ENET_PACKET_FLAG_RELIABLE);
-    enet_host_broadcast(server, 0, packet);
+
+    if (broadcast)
+        enet_peer_send(event.peer, 0, packet);
+    else
+        enet_host_broadcast(server, 0, packet);
+
     enet_host_flush(server);
 }

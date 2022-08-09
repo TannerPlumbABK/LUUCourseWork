@@ -82,8 +82,16 @@ int main(int argc, char** argv)
                 break;
             }
             case ENET_EVENT_TYPE_RECEIVE:
-                //cout << "A packet of length " << event.packet->dataLength << " containing " << (char*)event.packet->data << endl;
-                cout << (char*)event.packet->data << endl;
+                HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+                string receivedMessage = (char*)event.packet->data;
+                string user = receivedMessage.substr(0, receivedMessage.find(":"));
+
+                if (user == name)
+                    SetConsoleTextAttribute(console, 9); // 9 = Blue
+                
+                cout << receivedMessage << endl;
+                SetConsoleTextAttribute(console, 7); // 7 = Regular
 
                 /* Clean up the packet now that we're done using it. */
                 enet_packet_destroy(event.packet);
@@ -122,6 +130,7 @@ void SendPacket(string message)
 
 void GetInput()
 {
+
     while (!doneChatting)
     {
         cin.clear();
@@ -135,6 +144,21 @@ void GetInput()
             return;
         }
 
+        // let's back up so new incoming input will overwrite what the user typed
+        HANDLE output = GetStdHandle(STD_OUTPUT_HANDLE);
+        CONSOLE_SCREEN_BUFFER_INFO cbsi;
+        short x = 0;
+        short y = 0;
+
+        if (GetConsoleScreenBufferInfo(output, &cbsi))
+        {
+            x = cbsi.dwCursorPosition.X;
+            y = cbsi.dwCursorPosition.Y - 1;
+        }
+        COORD pos = { x, y };
+        SetConsoleCursorPosition(output, pos);
+
+        // create and send the message
         message = name + ": " + message;
         SendPacket(message);
         message = "";
