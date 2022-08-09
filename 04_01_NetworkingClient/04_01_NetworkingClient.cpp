@@ -89,6 +89,8 @@ int main(int argc, char** argv)
 
                 if (user == name)
                     SetConsoleTextAttribute(console, 9); // 9 = Blue
+                else if (user == "Private Message from Anonymous")
+                    SetConsoleTextAttribute(console, 13);
                 
                 cout << receivedMessage << endl;
                 SetConsoleTextAttribute(console, 7); // 7 = Regular

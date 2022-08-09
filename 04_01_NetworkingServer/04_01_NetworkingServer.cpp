@@ -45,13 +45,27 @@ int main(int argc, char** argv)
                 /* Store any relevant client information here. */
                 event.peer->data = (void*)("Client information");
 
-                SendPacket(WELCOME_MESSAGE, true);
+                SendPacket(WELCOME_MESSAGE, false);
                 break;
             }
             case ENET_EVENT_TYPE_RECEIVE:
             {
                 cout << "A packet of length " << event.packet->dataLength << " containing " << (char*)event.packet->data << endl;
-                SendPacket((char*)event.packet->data, false);
+                SendPacket((char*)event.packet->data, true);
+
+                bool sendRandomMessage = (rand() % 10) + 1 == 5;
+                if (sendRandomMessage)
+                {
+                    // TROLLING MESSAGES. Not to be taken seriously.
+                    int i = (rand() % 5) + 1;
+                    string randomMessage = "Private Message from Anonymous: ";
+                    if (i == 1) randomMessage += "Pressing Alt+F4 on your keyboard seems to give you money.";
+                    else if (i == 2) randomMessage += "Why is Zelda always trying to save the princess?";
+                    else if (i == 3) randomMessage += "Why is the Lich King's mount called Invincible when you can see it?";
+                    else if (i == 4) randomMessage += "Why is it called an Xbox 360? Because you turn 360 degrees and walk away.";
+                    else randomMessage += "Why didn't Harry Potter save Middle-earth at the end of Star Wars?";
+                    SendPacket(randomMessage, false);
+                }
 
                 /* Clean up the packet now that we're done using it. */
                 enet_packet_destroy(event.packet);
@@ -97,9 +111,9 @@ void SendPacket(string message, bool broadcast)
     ENetPacket* packet = enet_packet_create(msg, strlen(msg) + 1, ENET_PACKET_FLAG_RELIABLE);
 
     if (broadcast)
-        enet_peer_send(event.peer, 0, packet);
-    else
         enet_host_broadcast(server, 0, packet);
+    else
+        enet_peer_send(event.peer, 0, packet);
 
     enet_host_flush(server);
 }
