@@ -110,10 +110,8 @@ void SendPacket(string message, bool broadcast)
     const char* msg = message.c_str();
     ENetPacket* packet = enet_packet_create(msg, strlen(msg) + 1, ENET_PACKET_FLAG_RELIABLE);
 
-    if (broadcast)
-        enet_host_broadcast(server, 0, packet);
-    else
-        enet_peer_send(event.peer, 0, packet);
+    if (broadcast) enet_host_broadcast(server, 0, packet);
+    else enet_peer_send(event.peer, 0, packet);
 
     enet_host_flush(server);
 }

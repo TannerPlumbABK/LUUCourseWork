@@ -13,6 +13,13 @@ ENetEvent event;
 ENetHost* client = nullptr;
 ENetPeer* peer;
 
+enum Colors
+{
+    REGULAR = 7,
+    BLUE = 9,
+    PURPLE = 13,
+};
+
 bool doneChatting = false;
 string name;
 string message = "";
@@ -87,13 +94,11 @@ int main(int argc, char** argv)
                 string receivedMessage = (char*)event.packet->data;
                 string user = receivedMessage.substr(0, receivedMessage.find(":"));
 
-                if (user == name)
-                    SetConsoleTextAttribute(console, 9); // 9 = Blue
-                else if (user == "Private Message from Anonymous")
-                    SetConsoleTextAttribute(console, 13);
+                if (user == name) SetConsoleTextAttribute(console, Colors::BLUE);
+                else if (user == "Private Message from Anonymous") SetConsoleTextAttribute(console, Colors::PURPLE);
                 
                 cout << receivedMessage << endl;
-                SetConsoleTextAttribute(console, 7); // 7 = Regular
+                SetConsoleTextAttribute(console, Colors::REGULAR);
 
                 /* Clean up the packet now that we're done using it. */
                 enet_packet_destroy(event.packet);
@@ -101,10 +106,7 @@ int main(int argc, char** argv)
         }
     }
 
-    if (client != nullptr)
-    {
-        enet_host_destroy(client);
-    }
+    if (client != nullptr) enet_host_destroy(client); 
 
     InputThread.join();
 
