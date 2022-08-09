@@ -10,6 +10,13 @@ ENetAddress address;
 ENetHost* server = nullptr;
 ENetEvent event;
 
+constexpr int SERVER_PORT = 1234;
+
+constexpr int MAX_CLIENTS = 32;
+constexpr int MAX_CHANNELS = 2;
+constexpr int BANDWIDTH_INCOMING = 0; // 0 = unlimited
+constexpr int BANDWIDTH_OUTGOING = 0; // 0 = unlimited
+constexpr int TIMEOUT_MS = 1000;
 constexpr auto WELCOME_MESSAGE = "You're now connected to chat!\nType \"/quit\" to exit.\n";
 
 bool CreateServer();
@@ -34,25 +41,25 @@ int main(int argc, char** argv)
 
     while (1)
     {
-        /* Wait up to 1000 milliseconds for an event. */
-        while (enet_host_service(server, &event, 1000) > 0)
+        while (enet_host_service(server, &event, TIMEOUT_MS) > 0)
         {
             switch (event.type)
             {
             case ENET_EVENT_TYPE_CONNECT:
             {
                 cout << "A new client connected from " << event.peer->address.host << ":" << event.peer->address.port << endl;
-                /* Store any relevant client information here. */
                 event.peer->data = (void*)("Client information");
-
                 SendPacket(WELCOME_MESSAGE, false);
                 break;
             }
             case ENET_EVENT_TYPE_RECEIVE:
             {
                 cout << "A packet of length " << event.packet->dataLength << " containing " << (char*)event.packet->data << endl;
+                
+                // Send the message out to ALL connected clients
                 SendPacket((char*)event.packet->data, true);
 
+                // check if we should respond back to the client that sent the message with a random message
                 bool sendRandomMessage = (rand() % 10) + 1 == 5;
                 if (sendRandomMessage)
                 {
@@ -67,41 +74,30 @@ int main(int argc, char** argv)
                     SendPacket(randomMessage, false);
                 }
 
-                /* Clean up the packet now that we're done using it. */
+                // Clean up the packet now that we're done using it.
                 enet_packet_destroy(event.packet);
-
                 break;
             }
             case ENET_EVENT_TYPE_DISCONNECT:
+                // Reset the peer's client information
                 cout << (char*)event.peer->data << " disconnected." << endl;
-                /* Reset the peer's client information. */
                 event.peer->data = NULL;
             }
         }
     }
 
-    if (server != nullptr)
-    {
-        enet_host_destroy(server);
-    }
+    if (server != nullptr) enet_host_destroy(server); 
 
     return EXIT_SUCCESS;
 }
 
 bool CreateServer()
 {
-    /* Bind the server to the default localhost.     */
-    /* A specific host address can be specified by   */
-    /* enet_address_set_host (& address, "x.x.x.x"); */
+    // Bind the server to the default `localhost` on port `1234`
+    // The host address can be set with `enet_address_set_host(&address, "x.x.x.x");`
     address.host = ENET_HOST_ANY;
-    /* Bind the server to port 1234. */
-    address.port = 1234;
-    server = enet_host_create(&address /* the address to bind the server host to */,
-        32      /* allow up to 32 clients and/or outgoing connections */,
-        2      /* allow up to 2 channels to be used, 0 and 1 */,
-        0      /* assume any amount of incoming bandwidth */,
-        0      /* assume any amount of outgoing bandwidth */);
-
+    address.port = SERVER_PORT;
+    server = enet_host_create(&address, MAX_CLIENTS, MAX_CHANNELS, BANDWIDTH_INCOMING, BANDWIDTH_OUTGOING);
     return server != nullptr;
 }
 

@@ -13,17 +13,28 @@ ENetEvent event;
 ENetHost* client = nullptr;
 ENetPeer* peer;
 
+constexpr auto SERVER_HOST = "127.0.0.1";
+constexpr int SERVER_PORT = 1234;
+
+constexpr int OUTGOING_CONNECTIONS = 1;
+constexpr int MAX_CHANNELS = 2;
+constexpr int BANDWIDTH_INCOMING = 0; // 0 = unlimited
+constexpr int BANDWIDTH_OUTGOING = 0; // 0 = unlimited
+
+constexpr int CONNECT_TIMEOUT_MS = 5000;
+constexpr int LOOP_TIMEOUT_MS = 1000;
+
+bool doneChatting = false;
+string name;
+string message = "";
+bool sendPacket = false;
+
 enum Colors
 {
     REGULAR = 7,
     BLUE = 9,
     PURPLE = 13,
 };
-
-bool doneChatting = false;
-string name;
-string message = "";
-bool sendPacket = false;
 
 bool CreateClient();
 void SendPacket(string message);
@@ -48,12 +59,10 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    /* Connect to some.server.net:1234. */
-    enet_address_set_host(&address, "127.0.0.1");
-    address.port = 1234;
-
-    /* Initiate the connection, allocating the two channels 0 and 1. */
-    peer = enet_host_connect(client, &address, 2, 0);
+    // connect to the server
+    enet_address_set_host(&address, SERVER_HOST);
+    address.port = SERVER_PORT;
+    peer = enet_host_connect(client, &address, MAX_CHANNELS, 0);
 
     if (peer == NULL)
     {
@@ -61,16 +70,14 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    /* Wait up to 5 seconds for the connection attempt to succeed. */
-    if (enet_host_service(client, &event, 5000) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
-        cout << "Connection to 127.0.0.1:1234 succeeded." << endl;
+    // Wait up to CONNECT_TIME_MS for the connection attempt to succeed
+    if (enet_host_service(client, &event, CONNECT_TIMEOUT_MS) > 0 && event.type == ENET_EVENT_TYPE_CONNECT)
+        cout << "Connection to " << SERVER_HOST << ":" << SERVER_PORT << " succeeded." << endl;
     else
     {
-        /* Either the 5 seconds are up or a disconnect event was */
-        /* received. Reset the peer in the event the 5 seconds   */
-        /* had run out without any significant event.            */
+        // Either CONNECT_TIMEOUT_MS was reached or the client disconnected
         enet_peer_reset(peer);
-        cout << "Connection to 127.0.0.1:1234 failed." << endl;
+        cout << "Connection to " << SERVER_HOST << ":" << SERVER_PORT << " failed." << endl;
     }
 
     thread InputThread(GetInput);
@@ -78,7 +85,7 @@ int main(int argc, char** argv)
     while (!doneChatting)
     {
         /* Wait up to 1000 milliseconds for an event. */
-        while (enet_host_service(client, &event, 1000) > 0)
+        while (enet_host_service(client, &event, LOOP_TIMEOUT_MS) > 0)
         {
             switch (event.type)
             {
@@ -115,12 +122,7 @@ int main(int argc, char** argv)
 
 bool CreateClient()
 {
-    client = enet_host_create(NULL /* create a client host */,
-        1 /* only allow 1 outgoing connection */,
-        2 /* allow up 2 channels to be used, 0 and 1 */,
-        0 /* assume any amount of incoming bandwidth */,
-        0 /* assume any amount of outgoing bandwidth */);
-
+    client = enet_host_create(NULL, OUTGOING_CONNECTIONS, MAX_CHANNELS, BANDWIDTH_INCOMING, BANDWIDTH_OUTGOING);
     return client != nullptr;
 }
 
@@ -138,7 +140,6 @@ void GetInput()
     while (!doneChatting)
     {
         cin.clear();
-
         getline(cin, message);
 
         if (message == "/quit")
