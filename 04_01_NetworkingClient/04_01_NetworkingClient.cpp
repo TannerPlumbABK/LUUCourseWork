@@ -33,6 +33,7 @@ enum Colors
 {
     REGULAR = 7,
     BLUE = 9,
+    GREEN = 10,
     PURPLE = 13,
 };
 
@@ -103,6 +104,7 @@ int main(int argc, char** argv)
 
                 if (user == name) SetConsoleTextAttribute(console, Colors::BLUE);
                 else if (user == "Private Message from Anonymous") SetConsoleTextAttribute(console, Colors::PURPLE);
+                else if (receivedMessage.find(":") == string::npos) SetConsoleTextAttribute(console, Colors::GREEN);
                 
                 cout << receivedMessage << endl;
                 SetConsoleTextAttribute(console, Colors::REGULAR);
