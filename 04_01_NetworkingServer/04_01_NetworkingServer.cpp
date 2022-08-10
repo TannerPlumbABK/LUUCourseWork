@@ -108,10 +108,7 @@ int main(int argc, char** argv)
                     }
                     else if (message == "/quit")
                     {
-                        // send left message
-                        string fullMessage = (char*)event.packet->data;
-                        string username = fullMessage.substr(0, fullMessage.find(":"));
-                        string leftMessage = username + " has left the chatroom.";
+                        string leftMessage = user + " has left the chatroom.";
                         SendPacket(leftMessage, true);
                     }
                     else
