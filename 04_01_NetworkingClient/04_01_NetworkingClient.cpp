@@ -146,7 +146,6 @@ void GetInput()
         {
             doneChatting = true;
             cout << "Exitting chat..." << endl;
-            return;
         }
 
         // let's back up so new incoming input will overwrite what the user typed
