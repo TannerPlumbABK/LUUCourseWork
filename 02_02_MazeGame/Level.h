@@ -17,6 +17,7 @@ private:
 	std::thread* enemyThread;
 
 	bool Convert(int* playerX, int* playerY);
+	void KillThread();
 
 public:
 	char* m_pLevelData;

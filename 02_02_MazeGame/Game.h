@@ -5,7 +5,7 @@
 #include "Level.h"
 #include "Shop.h"
 
-constexpr int maxLevel = 2;
+constexpr int maxLevel = 3;
 constexpr int levelCompleteMoneyReward = 25;
 constexpr int startingShopOdds = 0;
 constexpr int increasingOddsPerLevel = 100;
@@ -37,6 +37,7 @@ private:
 	bool ProcessInput();
 	void DrawThread();
 	bool ResetGame();
+	void KillThread();
 
 public:
 	Game();

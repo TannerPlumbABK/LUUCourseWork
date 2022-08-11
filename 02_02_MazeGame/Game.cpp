@@ -42,6 +42,15 @@ Game::Game()
 	//
 }
 
+void Game::KillThread()
+{
+	runThread = false;
+	skipThread = true;
+	drawThread->join();
+	drawThread = nullptr;
+	delete drawThread;
+}
+
 bool Game::Load(int levelNum)
 {
 	string levelName = "Level";
@@ -87,11 +96,7 @@ bool Game::Update()
 {
 	if (m_currentLevelNum > maxLevel)
 	{
-		runThread = false;
-		skipThread = true;
-		drawThread->join();
-		drawThread = nullptr;
-		delete drawThread;
+		KillThread();
 		return true;
 	}
 	return ProcessInput();
@@ -126,19 +131,15 @@ bool Game::ProcessInput()
 bool Game::ResetGame()
 {
 	m_player.DecrementLives();
-
-	runThread = false;
+	KillThread();
 
 	if (m_player.GetLives() <= 0)
 	{
-		drawThread->join();
-		drawThread = nullptr;
-		delete drawThread;
 		return true;
 	}
+
 	Load(m_currentLevelNum);
 	Draw();
-	runThread = true;
 
 	return false;
 }
@@ -152,21 +153,11 @@ bool Game::CheckCollision(int newPlayerX, int newPlayerY)
 	{
 		collidedActor->HandleCollision(m_player);
 		
-		if (m_player.GetLives() <= 0
-			|| m_currentLevelNum > maxLevel)
-		{
-			runThread = false;
-			drawThread->join();
-			isGameDone = true;
-			drawThread = nullptr;
-			delete drawThread;
-		}
+		if (m_player.GetLives() <= 0 || m_currentLevelNum > maxLevel) KillThread();
 
 		if (collidedActor->GetType() == ActorType::Goal)
 		{
-			runThread = false;
-			drawThread->join();
-			drawThread = nullptr;
+			KillThread();
 			m_initialDraw = false;
 			m_shop.LookForShop(&m_player);
 			Load(m_currentLevelNum + 1);

@@ -46,6 +46,11 @@ Level::~Level()
 		m_pActors.pop_back();
 	}
 
+	KillThread();
+}
+
+void Level::KillThread()
+{
 	if (enemyThread != nullptr)
 	{
 		runThread = false;
@@ -271,12 +276,6 @@ vector<PlacableActor*> Level::GetActors()
 
 void Level::ClearActors()
 {
-	if (enemyThread != nullptr)
-	{
-		runThread = false;
-		enemyThread->join();
-		enemyThread = nullptr;
-		delete enemyThread;
-	}
+	KillThread();
 	m_pActors.clear();
 }
