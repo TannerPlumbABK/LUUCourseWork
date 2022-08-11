@@ -36,6 +36,7 @@ private:
 	bool CheckCollision(int newPlayerX, int newPlayerY);
 	bool ProcessInput();
 	void DrawThread();
+	bool ResetGame();
 
 public:
 	Game();

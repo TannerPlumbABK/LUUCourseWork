@@ -64,9 +64,8 @@ void Game::Run()
 		m_initialDraw = true;
 		Draw();
 	}
-	//Draw();
+
 	m_isGameOver = Update();
-	//if (m_isGameOver) Draw();
 }
 
 bool Game::IsGameOver()
@@ -111,25 +110,7 @@ bool Game::ProcessInput()
 	else if (input == rightArrow || (char)input == 'D' || (char)input == 'd') newPlayerX += 1;
 	else if (input == upArrow || (char)input == 'W' || (char)input == 'w') newPlayerY -= 1;
 	else if (input == downArrow || (char)input == 'S' || (char)input == 's') newPlayerY += 1;
-	else if ((char)input == 'r' || (char)input == 'R')
-	{
-		m_player.DecrementLives();
-
-		runThread = false;
-
-		if (m_player.GetLives() <= 0)
-		{
-			drawThread->join();
-			drawThread = nullptr;
-			delete drawThread;
-			return true;
-		}
-		Load(m_currentLevelNum);
-		Draw();
-		runThread = true;
-
-		return false;
-	}
+	else if ((char)input == 'r' || (char)input == 'R') return ResetGame();
 	else if (input == escapeKey)
 	{
 		m_userQuit = true;
@@ -140,6 +121,26 @@ bool Game::ProcessInput()
 	// if position didn't change
 	if (newPlayerX == m_player.GetPositionX() && newPlayerY == m_player.GetPositionY()) return false;
 	else return CheckCollision(newPlayerX, newPlayerY);
+}
+
+bool Game::ResetGame()
+{
+	m_player.DecrementLives();
+
+	runThread = false;
+
+	if (m_player.GetLives() <= 0)
+	{
+		drawThread->join();
+		drawThread = nullptr;
+		delete drawThread;
+		return true;
+	}
+	Load(m_currentLevelNum);
+	Draw();
+	runThread = true;
+
+	return false;
 }
 
 bool Game::CheckCollision(int newPlayerX, int newPlayerY)
