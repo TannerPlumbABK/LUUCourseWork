@@ -4,43 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Curves/CurveFloat.h"
-#include "DoorInteractionComponent.generated.h"
+#include "TrapInteractionComponent.generated.h"
 
 class ATriggerBox;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class UE_MAZEGAME_API UDoorInteractionComponent : public UActorComponent
+class UE_MAZEGAME_API UTrapInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UDoorInteractionComponent();
+	UTrapInteractionComponent();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-		FRotator DesiredRotation = FRotator::ZeroRotator;
-
-	FRotator StartRotation = FRotator::ZeroRotator;
-	FRotator FinalRotation = FRotator::ZeroRotator;
-
-	UPROPERTY(EditAnywhere)
-		float TimeToRotate = 1.0f;
-
-	float CurrentRotationTime = 0.0f;
-
-	UPROPERTY(EditAnywhere)
 		ATriggerBox* TriggerBox;
-
-	UPROPERTY(EditAnywhere)
-		FRuntimeFloatCurve OpenCurve;
-
-	UPROPERTY(EditAnywhere)
-		bool AutoClose = false;
 
 public:	
 	// Called every frame
