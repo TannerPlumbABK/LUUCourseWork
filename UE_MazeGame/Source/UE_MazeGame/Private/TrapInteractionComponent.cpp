@@ -36,8 +36,7 @@ void UTrapInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 		if (PlayerPawn && TriggerBox->IsOverlappingActor(PlayerPawn))
 		{
 			PlayerPawn->SetActorLocation(FVector(-2160.0, 2240.0, 112.000687));
-			
-			//UE_LOG(LogTemp, Log, TEXT("SPIKES"));
+			PlayerPawn->SetActorRotation(FRotator(0, 0, 0));
 		}
 	}
 }
