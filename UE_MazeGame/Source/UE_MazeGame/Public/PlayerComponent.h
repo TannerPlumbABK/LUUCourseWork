@@ -20,7 +20,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere) int Lives;
+	UPROPERTY(EditAnywhere) int Health = 100;
+	UPROPERTY(EditAnywhere) float OnFireDuration = 3.0f;
+
+	bool OnFire = false;
 
 public:	
 	// Called every frame
